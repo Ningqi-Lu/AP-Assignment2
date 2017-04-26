@@ -2,7 +2,6 @@ import Game.Cycling;
 import Game.Games;
 import Game.Running;
 import Game.Swimming;
-import Participants.Athlete;
 import Participants.Official;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ public class Driver {
     private String referee;
     public static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
     ArrayList<HashMap.Entry<String, String>> storeTopThreeList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
+
     /**
      * main menu class which control the main selection loop
      */
@@ -105,6 +105,7 @@ public class Driver {
      * sort the score of athlete
      * judge the prediction of user
      * allocate the score
+     *
      * @return list
      * @throws IOException
      */
@@ -117,13 +118,18 @@ public class Driver {
         getAthleteScore().clear();
         getAthleteScore();
 
-        ArrayList<HashMap.Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
+        ArrayList<Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
+        // HashMap mapping athleteID to score
+        //Map<String, String> orderedScoreMap = new HashMap<String,String>();
+
         //use collection to sort
         Collections.sort(list, Comparator.comparing(Entry::getValue));
 
         //sort the list and get the decrease sort
-        for (HashMap.Entry<String, String> mapping : list) {
+        for (Entry<String, String> mapping : list) {
+
             System.out.println(mapping.getKey() + ":    " + mapping.getValue());
+            //orderedScoreMap.put(mapping.getKey(), mapping.getValue());
         }
 
         System.out.println("===================================================================");
@@ -133,16 +139,15 @@ public class Driver {
         } else {
             System.out.println("Sorry, maybe next time you could predit the right athletes :)");
         }
-        this.storeTopThreeList=list;
+        this.storeTopThreeList = list;
     }
-
 
 
     /**
      * print out the results of this game
+     *
      * @throws IOException
      */
-
     public void displayAllResults() throws IOException {
         System.out.println("List below is all results:");
         if (type.equals("swimming")) {
@@ -164,26 +169,37 @@ public class Driver {
         }
     }
 
-    /*
-     * this method is printout the points of this game
+    /**
+     * This method gather the game results of each game
+     * @return a LinkedHashMap (stored game data in order)
+     * @throws IOException
      */
-    public void displayAllPoints() throws IOException {
+    public Map<Entry<String, String>, Integer> displayAllPoints() throws IOException {
+        // HashMap mapping athleteID to score
+        LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap <Entry<String, String>, Integer>();
+        orderedScoreMap.clear();
         System.out.println("===================================================================");
         System.out.println("Show all the athlete points:");
+        //input the AthleteID,AthleteScore and AthletePoints into a linked ID
+        // in which could printout in order
+        orderedScoreMap.put(storeTopThreeList.get(0), 5);
+        orderedScoreMap.put(storeTopThreeList.get(1), 2);
+        orderedScoreMap.put(storeTopThreeList.get(2), 1);
 
-        String gold = storeTopThreeList.get(0).getKey();
-        String silver = storeTopThreeList.get(1).getKey();
-        String bronze = storeTopThreeList.get(2).getKey();
-
-        System.out.println(gold +"  5 points");
-        System.out.println(silver +"  2 points");
-        System.out.println(bronze + "  1 points");
-        int i=3;
-        while(i<Games.getAttendAthlete().size()){
-            System.out.println(storeTopThreeList.get(i).getKey() + "  0 points");
+        int i = 3;
+        while (i < Games.getAttendAthlete().size()) {
+            orderedScoreMap.put(storeTopThreeList.get(i), 0);
             i++;
         }
-
+        //print out all the data in order
+        for(Entry<Entry<String, String>,Integer> entryAll : orderedScoreMap.entrySet()){
+            String key= String.valueOf(entryAll.getKey());
+            String s[]=key.split("=");
+            int value=entryAll.getValue();
+            System.out.println(s[0]+" "+s[1]+" "+" "+value);
+        }
+        storeTopThreeList.clear();
+        return orderedScoreMap;
     }
 
     /**
@@ -293,7 +309,7 @@ public class Driver {
      */
     public void getRandomOfficial() throws IOException {
         int i = (int) (Math.random() * Official.getOfficial().size());
-        referee = new String(Official.getOfficial().get(i)[2]);
+        referee = new String(Official.getOfficial().get(i)[1]);
         System.out.println(referee);
     }
 
