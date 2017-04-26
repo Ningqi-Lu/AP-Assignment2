@@ -66,7 +66,7 @@ public class Cyclist extends Athlete{
         ArrayList<String[]> tempCy = readTXTData.getLineList();
 
         for (int i = 0; i < tempCy.size(); i++) {
-            if (tempCy.get(i)[COLUMN_NUM - 1].equals("CYCLIST")) {
+            if (tempCy.get(i)[1].equals("CYCLIST")) {
                 String[] currCol = new String[COLUMN_NUM];
                 for (int n = 0; n < COLUMN_NUM; n++) {
                     currCol[n] = tempCy.get(i)[COLUMN_NUM + n - 5];

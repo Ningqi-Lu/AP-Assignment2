@@ -65,7 +65,7 @@ public class Sprinter extends Athlete{
         ArrayList<String[]> tempSp = readTXTData.getLineList();
 
         for (int i = 0; i < tempSp.size(); i++) {
-            if (tempSp.get(i)[COLUMN_NUM - 1].equals("SPRINTER")) {
+            if (tempSp.get(i)[1].equals("SPRINTER")) {
                 String[] currCol = new String[COLUMN_NUM];
                 for (int n = 0; n < COLUMN_NUM; n++) {
                     currCol[n] = tempSp.get(i)[COLUMN_NUM + n - 5];

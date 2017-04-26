@@ -23,9 +23,9 @@ public class readTXTData {
 
 
     //read the exact csv file，restore data and return ArrayList
-    public static void getCsvData() throws IOException {
+    public static void getTXTData() throws IOException {
 
-        BufferedReader br = new BufferedReader(new FileReader("PARTICIPANT.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("participants.txt"));
         String line = "";
         // Read a single line from the file until there are no more lines to read
         while ((line = br.readLine()) != null) {
@@ -50,7 +50,7 @@ public class readTXTData {
      * @throws IOException
      */
     public static ArrayList<String[]> getLineList() throws IOException {
-        getCsvData();
+        getTXTData();
         return lineList;
     }
 

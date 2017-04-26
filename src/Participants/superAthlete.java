@@ -65,7 +65,7 @@ public class superAthlete extends Athlete {
         ArrayList<String[]> tempSa = readTXTData.getLineList();
 
         for (int i = 0; i < tempSa.size(); i++) {
-            if (tempSa.get(i)[COLUMN_NUM - 1].equals("SUPERATHLETE")) {
+            if (tempSa.get(i)[1].equals("SUPERATHLETE")) {
                 String[] currCol = new String[COLUMN_NUM];
                 for (int n = 0; n < COLUMN_NUM; n++) {
                     currCol[n] = tempSa.get(i)[COLUMN_NUM + n - 5];

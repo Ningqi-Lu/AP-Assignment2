@@ -293,7 +293,7 @@ public class Driver {
      */
     public void getRandomOfficial() throws IOException {
         int i = (int) (Math.random() * Official.getOfficial().size());
-        referee = new String(Official.getOfficial().get(i)[1]);
+        referee = new String(Official.getOfficial().get(i)[2]);
         System.out.println(referee);
     }
 

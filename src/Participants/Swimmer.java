@@ -67,7 +67,7 @@ public class Swimmer extends Athlete{
         ArrayList<String[]> tempSw = readTXTData.getLineList();
 
         for (int i = 0; i < tempSw.size(); i++) {
-            if (tempSw.get(i)[COLUMN_NUM - 1].equals("SWIMMER")) {
+            if (tempSw.get(i)[1].equals("SWIMMER")) {
                 String[] currCol = new String[COLUMN_NUM];
                 for (int n = 0; n < COLUMN_NUM; n++) {
                     currCol[n] = tempSw.get(i)[COLUMN_NUM + n - 5];

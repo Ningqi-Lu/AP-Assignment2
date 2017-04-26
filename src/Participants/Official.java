@@ -38,7 +38,7 @@ public class Official extends Participant{
         ArrayList<String[]> tempOf = readTXTData.getLineList();
 
         for (int i = 0; i < tempOf.size(); i++) {
-            if (tempOf.get(i)[COLUMN_NUM - 1].equals("OFFICIAL")) {
+            if (tempOf.get(i)[1].equals("OFFICIAL")) {
                 String[] currCol = new String[COLUMN_NUM];
                 for (int n = 0; n < COLUMN_NUM; n++) {
                     currCol[n] = tempOf.get(i)[COLUMN_NUM + n - 5];
