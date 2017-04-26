@@ -7,7 +7,7 @@ import org.junit.After;
 /** 
 * Athlete Tester. 
 * 
-* @author <Authors name> 
+* @author <Ningqi Lu>
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
