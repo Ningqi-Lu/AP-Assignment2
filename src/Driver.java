@@ -94,7 +94,7 @@ public class Driver {
 
         for (int i = 0; i < Games.getAttendAthlete().size(); i++) {
 
-            scoreMap.put(Games.getAttendAthlete().get(i)[1], score[i]);
+            scoreMap.put(Games.getAttendAthlete().get(i)[0], score[i]);
 
         }
         return scoreMap;

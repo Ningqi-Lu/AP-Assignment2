@@ -34,7 +34,7 @@ public class Swimming extends Games implements Complete{
     }
 
     /**
-     * read data from csv file and select 4-8 athletes to attend swimming
+     * read data from txt file and select 4-8 athletes to attend swimming
      * @throws IOException
      */
     @Override

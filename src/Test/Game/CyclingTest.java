@@ -1,8 +1,8 @@
-package test.Game; 
+package Test.Game;
 
 import org.junit.Test; 
 import org.junit.Before; 
-import org.junit.After; 
+import org.junit.After;
 
 /** 
 * Cycling Tester. 

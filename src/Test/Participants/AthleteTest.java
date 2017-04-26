@@ -1,4 +1,4 @@
-package test.Participants; 
+package Test.Participants;
 
 import org.junit.Test; 
 import org.junit.Before; 
