@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
@@ -30,7 +29,9 @@ public class Driver {
     private String type = null; //the type of the game selected
     private int athleteChoice = 0;//the choice of athlete
     private String referee = null; // the string stored the current referee
-    Timestamp timestamp;
+    Timestamp timestamp;//timestamp to get the current system date
+    String[] s = new String[100];//a String store the game ID
+    int runTimes=0;// a integer to store the game run times
 
     public static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
 
@@ -126,13 +127,10 @@ public class Driver {
      */
     public void startGame() throws IOException {
         System.out.println("Game Started..... ");
-
+        runTimes++;
         getAthleteScore().clear();
         getAthleteScore();
         ArrayList<Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
-        // HashMap mapping athleteID to score
-        //Map<String, String> orderedScoreMap = new HashMap<String,String>();
-
         //use collection to sort
         Collections.sort(list, Comparator.comparing(Entry::getValue));
 
@@ -140,62 +138,61 @@ public class Driver {
         for (Entry<String, String> mapping : list) {
 
             System.out.println(mapping.getKey() + ":    " + mapping.getValue());
-            //orderedScoreMap.put(mapping.getKey(), mapping.getValue());
         }
-        //System.out.println("===================================================================");
-        // if to judge weather this is the topped athelete user predicted
-/*        if(athleteChoice==0)
-            System.out.println("Don't forget to predict a winner next time!");*/
+        this.storeDecreasedScoreList = list;
+        judgePredictWinner();
+    }
 
-        if (list.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
+    /**
+     * judge if the player guess the right top athlete
+     */
+    public void judgePredictWinner() {
+        //System.out.println(Games.getAttendAthlete().get(athleteChoice - 1)[0]);
+        if (athleteChoice == 0) {
+            System.out.println("Please do not forget to predict the winner! ");
+        } else if (storeDecreasedScoreList.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[0]) == TRUE && athleteChoice != 0) {
             System.out.println("Congratulation, your prediction is right!");
+            athleteChoice = 0;
         } else {
             System.out.println("Sorry, maybe next time you could predit the right athletes :)");
+            athleteChoice = 0;
         }
-
-        //athleteChoice = 0;
-        this.storeDecreasedScoreList = list;
     }
 
     /**
      * Print out the details of each game preparation
+     *
      * @throws IOException
      */
     public void printDetails() throws IOException {
 
-            timestamp = new Timestamp(System.currentTimeMillis());  //the run time of this game
-            System.out.println("The referee of this game is:");
-            getRandomOfficial();
-            System.out.println(referee);
-            System.out.println("here is the run time of this game: ");
-            System.out.println(timestamp);
+        timestamp = new Timestamp(System.currentTimeMillis());  //the run time of this game
+        System.out.println("The referee of this game is:");
+        getRandomOfficial();
+        System.out.println(referee);
+        System.out.println("here is the run time of this game: ");
+        System.out.println(timestamp);
 
-        }
+    }
 
     /**
      * print out the results of this game
      *
      * @throws IOException
      */
-    public void displayAllResults() throws IOException {
-        System.out.println("List below is all results:");
-        if (type.equals("swimming")) {
-            System.out.println("Game: S01");
-        } else if (type.equals("running")) {
-            System.out.println("Game: R01");
-        } else if (type.equals("cycling"))
-            System.out.println("Game: C01");
-        System.out.print("Referee:   ");
-        System.out.println(referee);
-
-        Set entries = scoreMap.entrySet();
-        Iterator iterator = entries.iterator();
-        while (iterator.hasNext()) {
-            HashMap.Entry entry = (HashMap.Entry) iterator.next();
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-            System.out.println("Name: " + key + "     Score: " + value);
+    public void generateGameID() throws IOException {
+        for (int i = 0; i < 100; i++) {
+            s[i] = String.format("%02d", i);
         }
+
+        if (type.equals("swimming")) {
+            out.write("S"+s[runTimes]+", ");
+        } else if (type.equals("running")) {
+            out.write("R"+s[runTimes]+", ");
+        } else if (type.equals("cycling")) {
+            out.write("C"+s[runTimes]+", ");
+        }
+
     }
 
     /**
@@ -206,7 +203,8 @@ public class Driver {
      */
     public void displayAllPoints() throws IOException {
         printDetails();
-        out.write(referee + "," + timestamp + "\r\n");
+        generateGameID();
+        out.write(referee + ", " + timestamp + "\r\n");
 
         // HashMap mapping athleteID,score and points of every athlete
         LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap<>();
@@ -229,8 +227,8 @@ public class Driver {
             String key = String.valueOf(entryAll.getKey());
             String s[] = key.split("=");
             int value = entryAll.getValue();
-            System.out.println(s[0] + " " + s[1] + " " + " " + value);
-            out.write(s[0] + " " + s[1] + " " + " " + value + "\r\n");
+            System.out.println(s[0] + ", " + s[1] + ", " + value);
+            out.write(s[0] + ", " + s[1] + ", " + value + "\r\n");
         }
         storeDecreasedScoreList.clear();
         out.write("\r\n");
@@ -286,7 +284,7 @@ public class Driver {
                 } else {
                     System.out.println("The Athlete you predicted is:");
                     for (int n = 0; n < Ozlympic.COLUMN_NUM; n++) {
-                            System.out.print(Games.getAttendAthlete().get(athleteChoice - 1)[n] + " ");
+                        System.out.print(Games.getAttendAthlete().get(athleteChoice - 1)[n] + " ");
                     }
                     break;
                 }

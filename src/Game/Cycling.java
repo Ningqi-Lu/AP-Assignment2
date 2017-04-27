@@ -29,7 +29,7 @@ public class Cycling extends Games implements Complete {
         String[] score = new String[Games.getAttendAthlete().size()];
         for (int count = 0; count < Games.getAttendAthlete().size(); count++) {
             Random random = new Random();
-            score[count] = String.format("%.2f", ((random.nextDouble() * 300.0d) + 500.0d));
+            score[count] = String.format("%.0f", ((random.nextDouble() * 300.0d) + 500.0d));
         }
         return score;
     }
