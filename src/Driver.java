@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
@@ -29,7 +30,7 @@ public class Driver {
     private String type = null; //the type of the game selected
     private int athleteChoice = 0;//the choice of athlete
     private String referee = null; // the string stored the current referee
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());  //the run time of this game
+    Timestamp timestamp;
 
     public static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
 
@@ -68,12 +69,9 @@ public class Driver {
                         startGame();
                         break;
                     case 4:
-                        displayAllResults();
-                        break;
-                    case 5:
                         displayAllPoints();
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("End of Game Ozlympic ! Thanks for playing!");
                         out.close(); // colse the file
                         return;
@@ -127,16 +125,10 @@ public class Driver {
      * @throws IOException
      */
     public void startGame() throws IOException {
-        System.out.println("The referee of this game is:");
-        getRandomOfficial();
-        System.out.println(referee);
-        System.out.println("here is the run time of this game: ");
-        System.out.println(timestamp);
         System.out.println("Game Started..... ");
-        System.out.println("Here is the score of each athlete:");
+
         getAthleteScore().clear();
         getAthleteScore();
-
         ArrayList<Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
         // HashMap mapping athleteID to score
         //Map<String, String> orderedScoreMap = new HashMap<String,String>();
@@ -151,20 +143,42 @@ public class Driver {
             //orderedScoreMap.put(mapping.getKey(), mapping.getValue());
         }
 
-        System.out.println("===================================================================");
+        //System.out.println("===================================================================");
         // if to judge weather this is the topped athelete user predicted
 /*        if(athleteChoice==0)
             System.out.println("Don't forget to predict a winner next time!");*/
 
-        if (list.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
+/*        if (list.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
             System.out.println("Congratulation, your prediction is right!");
         } else {
             System.out.println("Sorry, maybe next time you could predit the right athletes :)");
-        }
+        }*/
         //athleteChoice = 0;
         this.storeDecreasedScoreList = list;
     }
+        public void judgePredictWinner(){
 
+            if (storeDecreasedScoreList.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
+                System.out.println("Congratulation, your prediction is right!");
+            } else {
+                System.out.println("Sorry, maybe next time you could predit the right athletes :)");
+            }
+        }
+
+    /**
+     * Print out the details of each game preparation
+     * @throws IOException
+     */
+    public void printDetails() throws IOException {
+
+            timestamp = new Timestamp(System.currentTimeMillis());  //the run time of this game
+            System.out.println("The referee of this game is:");
+            getRandomOfficial();
+            System.out.println(referee);
+            System.out.println("here is the run time of this game: ");
+            System.out.println(timestamp);
+
+        }
 
     /**
      * print out the results of this game
@@ -199,8 +213,8 @@ public class Driver {
      * @throws IOException
      */
     public void displayAllPoints() throws IOException {
-
-        out.write(referee + "," + timestamp.toString() + "\r\n");
+        printDetails();
+        out.write(referee + "," + timestamp + "\r\n");
 
         // HashMap mapping athleteID,score and points of every athlete
         LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap<>();
@@ -218,7 +232,6 @@ public class Driver {
             orderedScoreMap.put(storeDecreasedScoreList.get(i), 0);
             i++;
         }
-
         //print out all the data in order
         for (Entry<Entry<String, String>, Integer> entryAll : orderedScoreMap.entrySet()) {
             String key = String.valueOf(entryAll.getKey());

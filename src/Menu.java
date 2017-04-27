@@ -12,7 +12,7 @@ public class Menu {
     /**
      * show the main selection menu
      */
-    public void menuShow() {
+/*    public void menuShow() {
         String menu[] = {"\n Ozlympic Game",
                 "===================================",
                 "1. Select a game to run",
@@ -21,6 +21,22 @@ public class Menu {
                 "4. Display the final results of all games",
                 "5. Display the points of all athletes",
                 "6. Exit",
+                " Enter an option:"};
+        for (int i = 0; i < menu.length; i++)
+            System.out.println(menu[i]);
+    }*/
+
+    /**
+     * console menu for assignment 2
+     */
+    public void menuShow() {
+        String menu[] = {"\n Ozlympic Game",
+                "===================================",
+                "1. Select a game to run",
+                "2. Predict the winner of the game",
+                "3. Start the game",
+                "4. Display this game results and output to file",
+                "5. Exit",
                 " Enter an option:"};
         for (int i = 0; i < menu.length; i++)
             System.out.println(menu[i]);
