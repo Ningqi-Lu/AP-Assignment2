@@ -84,6 +84,7 @@ public class Swimmer extends Athlete{
      * @throws IOException
      */
     public static ArrayList<String[]> getSwimmer() throws IOException {
+        swimmer.clear();
         readSwimmerdata();
         return swimmer;
     }

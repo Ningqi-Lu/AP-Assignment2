@@ -55,6 +55,7 @@ public class Official extends Participant{
      * @throws IOException
      */
     public static ArrayList<String[]> getOfficial() throws IOException {
+        official.clear();
         readOfficialdata();
         return official;
     }

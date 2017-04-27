@@ -50,6 +50,7 @@ public class readTXTData {
      * @throws IOException
      */
     public static ArrayList<String[]> getLineList() throws IOException {
+        lineList.clear();
         getTXTData();
         return lineList;
     }

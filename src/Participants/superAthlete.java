@@ -82,6 +82,7 @@ public class superAthlete extends Athlete {
      * @throws IOException
      */
     public static ArrayList<String[]> getSuperathletes() throws IOException {
+        superathletes.clear();
         readSuperAthleteData();
         return superathletes;
     }

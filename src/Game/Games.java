@@ -30,25 +30,33 @@ public abstract class Games {
      * @return ArrayList attendAthlete
      */
     public void selectRandomNumberAthlete(ArrayList<String[]> ad) {
+        //System.out.println(ad.size());
         ArrayList<Integer> judgeRepeatedList = new ArrayList<Integer>(); //a list used to judge if this row number is repeated
+        //judgeRepeatedList.clear();
         int num = (int) (Math.random() * 5 + 3); //the number of athletes will attend the game
         if (num < 4) {
             System.out.println("Athlete number lower than 4, game cancelled ");
         } else {
             for (int i = 0; i < num; i++) {
                 int rowNumber = (int) (Math.random() * (ad.size() - 1)); //select a random row in ArrayList passed in
-                if(!judgeRepeatedList.contains(rowNumber));
-                judgeRepeatedList.add(rowNumber);
+                if (judgeRepeatedList.contains(rowNumber)){
+                    i--;
+                }else{
+                    judgeRepeatedList.add(rowNumber);
+                }
+
             }
+            //System.out.println(judgeRepeatedList.size());
             // printout the athlete attend this game
             for (int i = 0; i < num; i++) {
                 String[] currCol = new String[COLUMN_NUM];
-                System.out.print((i+1)+": ");
+                System.out.print((i + 1) + ": ");
                 for (int j = 0; j < COLUMN_NUM; j++) {
                     currCol[j] = ad.get(judgeRepeatedList.get(i))[j];
                     System.out.print(currCol[j] + " ");
                 }
                 attendAthlete.add(currCol);
+
                 System.out.println();
             }
         }

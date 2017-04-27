@@ -82,6 +82,7 @@ public class Sprinter extends Athlete{
      * @throws IOException
      */
     public static ArrayList<String[]> getSprinter() throws IOException {
+        sprinter.clear();
         readSprinterdata();
         return sprinter;
     }

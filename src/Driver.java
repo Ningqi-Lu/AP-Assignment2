@@ -142,28 +142,20 @@ public class Driver {
             System.out.println(mapping.getKey() + ":    " + mapping.getValue());
             //orderedScoreMap.put(mapping.getKey(), mapping.getValue());
         }
-
         //System.out.println("===================================================================");
         // if to judge weather this is the topped athelete user predicted
 /*        if(athleteChoice==0)
             System.out.println("Don't forget to predict a winner next time!");*/
 
-/*        if (list.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
+        if (list.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
             System.out.println("Congratulation, your prediction is right!");
         } else {
             System.out.println("Sorry, maybe next time you could predit the right athletes :)");
-        }*/
+        }
+
         //athleteChoice = 0;
         this.storeDecreasedScoreList = list;
     }
-        public void judgePredictWinner(){
-
-            if (storeDecreasedScoreList.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
-                System.out.println("Congratulation, your prediction is right!");
-            } else {
-                System.out.println("Sorry, maybe next time you could predit the right athletes :)");
-            }
-        }
 
     /**
      * Print out the details of each game preparation

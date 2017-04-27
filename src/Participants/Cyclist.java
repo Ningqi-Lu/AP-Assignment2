@@ -83,6 +83,7 @@ public class Cyclist extends Athlete{
      * @throws IOException
      */
     public static ArrayList<String[]> getCyclist() throws IOException {
+        cyclist.clear();
         readCyclistData();
         return cyclist;
     }
