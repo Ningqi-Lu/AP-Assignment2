@@ -4,7 +4,11 @@ import Game.Running;
 import Game.Swimming;
 import Participants.Official;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -21,12 +25,25 @@ import static java.lang.Boolean.TRUE;
 
 public class Driver {
 
-    private int choice;// the choice of the menu
-    private String type; //the type of the game selected
+    private int choice = 0;// the choice of the menu
+    private String type = null; //the type of the game selected
     private int athleteChoice = 0;//the choice of athlete
-    private String referee;
+    private String referee = null; // the string stored the current referee
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());  //the run time of this game
+
     public static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
-    ArrayList<HashMap.Entry<String, String>> storeTopThreeList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
+
+    ArrayList<HashMap.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
+
+    File storedData = new File("gameResults.txt"); // create a new file
+    //the operator of the file
+    BufferedWriter out = new BufferedWriter(new FileWriter(storedData));
+
+    public Driver() throws IOException {
+        if (!storedData.exists()) {
+            storedData.createNewFile();
+        }// if the fire not exists,create new one
+    }
 
     /**
      * main menu class which control the main selection loop
@@ -58,6 +75,7 @@ public class Driver {
                         break;
                     case 6:
                         System.out.println("End of Game Ozlympic ! Thanks for playing!");
+                        out.close(); // colse the file
                         return;
                 }
             } catch (Exception e) {
@@ -67,7 +85,6 @@ public class Driver {
             }
         } while (true);
     }
-
 
     /**
      * get athlete score with different types
@@ -110,10 +127,12 @@ public class Driver {
      * @throws IOException
      */
     public void startGame() throws IOException {
-
-        System.out.println("Game Started..... ");
         System.out.println("The referee of this game is:");
         getRandomOfficial();
+        System.out.println(referee);
+        System.out.println("here is the run time of this game: ");
+        System.out.println(timestamp);
+        System.out.println("Game Started..... ");
         System.out.println("Here is the score of each athlete:");
         getAthleteScore().clear();
         getAthleteScore();
@@ -134,12 +153,16 @@ public class Driver {
 
         System.out.println("===================================================================");
         // if to judge weather this is the topped athelete user predicted
+/*        if(athleteChoice==0)
+            System.out.println("Don't forget to predict a winner next time!");*/
+
         if (list.get(0).getKey().equals(Games.getAttendAthlete().get(athleteChoice - 1)[1]) == TRUE) {
             System.out.println("Congratulation, your prediction is right!");
         } else {
             System.out.println("Sorry, maybe next time you could predit the right athletes :)");
         }
-        this.storeTopThreeList = list;
+        //athleteChoice = 0;
+        this.storeDecreasedScoreList = list;
     }
 
 
@@ -171,35 +194,42 @@ public class Driver {
 
     /**
      * This method gather the game results of each game
+     *
      * @return a LinkedHashMap (stored game data in order)
      * @throws IOException
      */
-    public Map<Entry<String, String>, Integer> displayAllPoints() throws IOException {
-        // HashMap mapping athleteID to score
-        LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap <Entry<String, String>, Integer>();
+    public void displayAllPoints() throws IOException {
+
+        out.write(referee + "," + timestamp.toString() + "\r\n");
+
+        // HashMap mapping athleteID,score and points of every athlete
+        LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap<>();
         orderedScoreMap.clear();
         System.out.println("===================================================================");
         System.out.println("Show all the athlete points:");
+
         //input the AthleteID,AthleteScore and AthletePoints into a linked ID
         // in which could printout in order
-        orderedScoreMap.put(storeTopThreeList.get(0), 5);
-        orderedScoreMap.put(storeTopThreeList.get(1), 2);
-        orderedScoreMap.put(storeTopThreeList.get(2), 1);
-
+        orderedScoreMap.put(storeDecreasedScoreList.get(0), 5);
+        orderedScoreMap.put(storeDecreasedScoreList.get(1), 2);
+        orderedScoreMap.put(storeDecreasedScoreList.get(2), 1);
         int i = 3;
         while (i < Games.getAttendAthlete().size()) {
-            orderedScoreMap.put(storeTopThreeList.get(i), 0);
+            orderedScoreMap.put(storeDecreasedScoreList.get(i), 0);
             i++;
         }
+
         //print out all the data in order
-        for(Entry<Entry<String, String>,Integer> entryAll : orderedScoreMap.entrySet()){
-            String key= String.valueOf(entryAll.getKey());
-            String s[]=key.split("=");
-            int value=entryAll.getValue();
-            System.out.println(s[0]+" "+s[1]+" "+" "+value);
+        for (Entry<Entry<String, String>, Integer> entryAll : orderedScoreMap.entrySet()) {
+            String key = String.valueOf(entryAll.getKey());
+            String s[] = key.split("=");
+            int value = entryAll.getValue();
+            System.out.println(s[0] + " " + s[1] + " " + " " + value);
+            out.write(s[0] + " " + s[1] + " " + " " + value + "\r\n");
         }
-        storeTopThreeList.clear();
-        return orderedScoreMap;
+        storeDecreasedScoreList.clear();
+        out.write("\r\n");
+        out.flush(); // put into the file
     }
 
     /**
@@ -243,7 +273,6 @@ public class Driver {
 
         do {
             Scanner in = new Scanner(System.in);
-            boolean b = false;
             try {
                 athleteChoice = in.nextInt();
                 if (athleteChoice > Games.getAttendAthlete().size()) {
@@ -252,14 +281,12 @@ public class Driver {
                 } else {
                     System.out.println("The Athlete you predicted is:");
                     for (int n = 0; n < Ozlympic.COLUMN_NUM; n++) {
-                        System.out.print(Games.getAttendAthlete().get(athleteChoice - 1)[n] + " ");
-                        //
+                            System.out.print(Games.getAttendAthlete().get(athleteChoice - 1)[n] + " ");
                     }
                     break;
                 }
             } catch (Exception e) {
                 System.out.println("Please input an order number of athlete list above!");
-                b = true;
             }
         } while (true);
         System.out.println();
@@ -309,8 +336,7 @@ public class Driver {
      */
     public void getRandomOfficial() throws IOException {
         int i = (int) (Math.random() * Official.getOfficial().size());
-        referee = new String(Official.getOfficial().get(i)[1]);
-        System.out.println(referee);
+        referee = new String(Official.getOfficial().get(i)[0]);
     }
 
 }
