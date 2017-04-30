@@ -239,7 +239,7 @@ public class Driver {
      * Show the athlete attending each game
      */
     public void showAthleteinSelectedGame() throws IOException {
-        type = selectGameLoop();
+        //type = selectGameLoop();
         System.out.println("List below is the name of athlete attend " + type + ":");
         System.out.println("===================================================");
         switch (type) {
@@ -342,4 +342,11 @@ public class Driver {
         referee = new String(Official.getOfficial().get(i)[0]);
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
