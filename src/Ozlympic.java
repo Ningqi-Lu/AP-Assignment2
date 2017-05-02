@@ -1,15 +1,11 @@
 import Game.Games;
-import Game.Swimming;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,9 +27,10 @@ import java.io.IOException;
  */
 public class Ozlympic extends Application {
 
-
+    Driver driver = new Driver();
     public static final int COLUMN_NUM = 5;
-    public static String Type=null; //record the type of game selected in toggle group
+    public static String Type = null; //record the type of game selected in toggle group
+
     public Ozlympic() throws IOException {
     }
 
@@ -96,27 +93,27 @@ public class Ozlympic extends Application {
 
         // return the type selected
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
-                Type= group.getSelectedToggle().getUserData().toString();
-                System.out.println(Type);
+            Type = group.getSelectedToggle().getUserData().toString();
+            System.out.println(Type);
         });
 
-                // Create and register the handler
+        // Create and register the handler
         start.setOnAction((ActionEvent e) -> {
-            if(group.getSelectedToggle()!=null){
-            try {
-                getPredictStage();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }}else
-            {
-                Stage s=new Stage();
-                Label warningMessage=new Label("Please select the game!");
+            if (group.getSelectedToggle() != null) {
+                try {
+                    getPredictStage();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            } else {
+                Stage s1 = new Stage();
+                Label warningMessage = new Label("Please select the game!");
                 warningMessage.setAlignment(Pos.CENTER);
-                Scene ss=new Scene(warningMessage,150,50);
-                s.setTitle("WARNING");
-                s.setScene(ss);
-                s.setResizable(false);
-                s.show();
+                Scene ss = new Scene(warningMessage, 150, 50);
+                s1.setTitle("WARNING");
+                s1.setScene(ss);
+                s1.setResizable(false);
+                s1.show();
             }
         });
 
@@ -128,10 +125,53 @@ public class Ozlympic extends Application {
         return vbox;
     }
 
+    protected void getResultsTable() {
+        Stage s2 = new Stage();
+        s2.setTitle("Game Results");
+
+        //draw the table which is used to show results
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setPadding(new Insets(10));
+
+        //a label to show the results
+        //create the title of the game
+        Text gameResult = new Text(20, 20, "Here is the results of Game!");
+        gameResult.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 25));
+
+        //a table to show the game results
+        TableView scoreTable = new TableView();
+        scoreTable.setEditable(false);
+        scoreTable.setPadding(new Insets(5));
+
+        TableColumn firstNameCol = new TableColumn("Athlete ID");
+        TableColumn lastNameCol = new TableColumn("Athlete Score");
+        TableColumn emailCol = new TableColumn("Points");
+
+        scoreTable.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+
+        HBox hBox=new HBox();
+        hBox.setPadding(new Insets(10));
+        hBox.setAlignment(Pos.TOP_CENTER);
+
+        Button btnRestart =new Button("Restart");
+        Button btnExit =new Button("Exit");
+
+        hBox.getChildren().addAll(btnRestart,btnExit);
+
+        vBox.getChildren().addAll(gameResult, scoreTable,hBox);
+
+        Scene ss = new Scene(vBox, 400, 500);
+        s2.setScene(ss);
+        s2.show();
+        //return s2;
+    }
+
+
     protected void getPredictStage() throws IOException {
-        Driver driver=new Driver();
+        //Driver driver = new Driver();
         //create a new stage to pop up a new window
-        Stage predict =new Stage();
+        Stage predict = new Stage();
 
         //create new elements of in the new window
         //Label warningMessage=new Label("message");
@@ -141,7 +181,7 @@ public class Ozlympic extends Application {
         titleInfo.setPadding(new Insets(10));
 
         //create the title of the game
-        Text predictTitle = new Text(20, 20, "Here is the athlete attend the game you choosed\nPlease tick one as you predicted!");
+        Text predictTitle = new Text(20, 20, "Here is the athlete will attend the game\nPlease select one to predicted!");
         predictTitle.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
         titleInfo.getChildren().addAll(predictTitle);
 
@@ -154,12 +194,12 @@ public class Ozlympic extends Application {
         //choice box to choose the winner
         driver.setType(Type);
         driver.showAthleteinSelectedGame();
-        ChoiceBox<Object> cb=new ChoiceBox<>();
-        for (int i = 0; i <Games.attendAthlete.size() ; i++) {
+        ChoiceBox<Object> cb = new ChoiceBox<>();
+        for (int i = 0; i < Games.attendAthlete.size(); i++) {
             cb.getItems().addAll(FXCollections.observableArrayList(
-                                Games.attendAthlete.get(i)[0]+" "+Games.attendAthlete.get(i)[1]+" "
-                                +Games.attendAthlete.get(i)[2]+" "+Games.attendAthlete.get(i)[3]+" "
-                                +Games.attendAthlete.get(i)[4]));
+                    Games.attendAthlete.get(i)[0] + " " + Games.attendAthlete.get(i)[1] + " "
+                            + Games.attendAthlete.get(i)[2] + " " + Games.attendAthlete.get(i)[3] + " "
+                            + Games.attendAthlete.get(i)[4]));
         }
 
         cb.setTooltip(new Tooltip("Select the winner!"));
@@ -168,17 +208,22 @@ public class Ozlympic extends Application {
         //create the start button
         Button btnPredict = new Button("Predict");
         btnPredict.setPadding(new Insets(10));
-        // Create and register the handler
 
-        btnPredict.setOnAction((ActionEvent e) -> predict.close());
 
         //Put in all elements to a VBox
         VBox wholePredictStage = new VBox();
         wholePredictStage.setSpacing(10);
         wholePredictStage.setAlignment(Pos.TOP_CENTER);
-        wholePredictStage.getChildren().addAll(titleInfo,winnerSelect,btnPredict);
+        wholePredictStage.getChildren().addAll(titleInfo, winnerSelect, btnPredict);
 
-        Scene secondWindow=new Scene(wholePredictStage,400,200);
+        // Create and register the handler
+        btnPredict.setOnAction((ActionEvent e) -> {
+            predict.close();
+            getResultsTable();
+
+        });
+
+        Scene secondWindow = new Scene(wholePredictStage, 400, 180);
         predict.setTitle("Predict the winner!");
         predict.setScene(secondWindow);
         predict.setResizable(false);
