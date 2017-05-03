@@ -20,7 +20,7 @@ import java.io.IOException;
 /*
  * Ozympic Class
  *
- * This class is the entrance of
+ * This class is the entrance of whole project
  *
  * Created by Ningqi Lu on 3/22/2017.
  * Modified by both Ningqi Lu and Yingzhi Lu
@@ -30,7 +30,12 @@ public class Ozlympic extends Application {
     Driver driver = new Driver();
     public static final int COLUMN_NUM = 5;
     public static String Type = null; //record the type of game selected in toggle group
-
+     Map<String, String> map = new HashMap<>();// a map to store the ID and score
+           
+    Button start = new Button("Start Game"); //create the start button
+    Button btnRestart =new Button("Restart"); //create the restart button
+    Button btnExit =new Button("Exit"); //create the exit button
+    
     public Ozlympic() throws IOException {
     }
 
@@ -87,8 +92,6 @@ public class Ozlympic extends Application {
 
         gameselect.getChildren().addAll(swimming, cycling, running);
 
-        //create the start button
-        Button start = new Button("Start Game");
         start.setAlignment(Pos.TOP_CENTER);
 
         // return the type selected
@@ -139,24 +142,41 @@ public class Ozlympic extends Application {
         Text gameResult = new Text(20, 20, "Here is the results of Game!");
         gameResult.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 25));
 
-        //a table to show the game results
-        TableView scoreTable = new TableView();
+        //a table to show the game results   
+        // use fully detailed type for Map.Entry<String, String> 
+        TableColumn<Map.Entry<String, String>, String> athleteIDCol = new TableColumn<>("Athlete ID");
+        column1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+                // this callback returns property for just one cell, you can't use a loop here
+                // for first column we use key
+                return new SimpleStringProperty(p.getValue().getKey());
+            }
+        });
+
+        TableColumn<Map.Entry<String, String>, String> athleteScoreCol = new TableColumn<>("Athlete Score");
+        column2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+                // for second column we use value
+                return new SimpleStringProperty(p.getValue().getValue());
+            }
+        });
+        
+        TableColumn pointsCol = new TableColumn("Points");
+
+        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(map.entrySet());
+        final TableView<Map.Entry<String,String>> scoreTable = new TableView<>(items);
         scoreTable.setEditable(false);
         scoreTable.setPadding(new Insets(5));
-
-        TableColumn firstNameCol = new TableColumn("Athlete ID");
-        TableColumn lastNameCol = new TableColumn("Athlete Score");
-        TableColumn emailCol = new TableColumn("Points");
-
-        scoreTable.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+        //bind all data
+        scoreTable.getColumns().setAll(athleteIDCol, athleteScoreCol,pointsCol);
 
         HBox hBox=new HBox();
         hBox.setPadding(new Insets(10));
         hBox.setAlignment(Pos.TOP_CENTER);
-
-        Button btnRestart =new Button("Restart");
-        Button btnExit =new Button("Exit");
-
         hBox.getChildren().addAll(btnRestart,btnExit);
 
         vBox.getChildren().addAll(gameResult, scoreTable,hBox);
