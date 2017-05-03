@@ -29,7 +29,7 @@ public class Swimming extends Games implements Complete {
         String[] score = new String[Games.getAttendAthlete().size()];
         for (int count = 0; count < Games.getAttendAthlete().size(); count++) {
             Random random = new Random();
-            score[count] = String.format("%.0f", ((random.nextDouble() * 100.0d) + 100.0d));
+            score[count] = String.format("%.1f", ((random.nextDouble() * 100.0d) + 100.0d));
         }
         return score;
     }

@@ -32,10 +32,11 @@ public class Driver {
     Timestamp timestamp;//timestamp to get the current system date
     String[] s = new String[100];//a String store the game ID
     int runTimes=0;// a integer to store the game run times
+    String GameID =null; // store the game id of game
 
     public static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
 
-    ArrayList<HashMap.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
+    public ArrayList<HashMap.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
 
     File storedData = new File("gameResults.txt"); // create a new file
     //the operator of the file
@@ -128,6 +129,7 @@ public class Driver {
     public void startGame() throws IOException {
         System.out.println("Game Started..... ");
         runTimes++;
+        storeDecreasedScoreList.clear();
         getAthleteScore().clear();
         getAthleteScore();
         ArrayList<Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
@@ -140,7 +142,7 @@ public class Driver {
             System.out.println(mapping.getKey() + ":    " + mapping.getValue());
         }
         this.storeDecreasedScoreList = list;
-        judgePredictWinner();
+        //judgePredictWinner();
     }
 
     /**
@@ -186,10 +188,13 @@ public class Driver {
         }
 
         if (type.equals("swimming")) {
+            GameID="S"+s[runTimes];
             out.write("S"+s[runTimes]+", ");
         } else if (type.equals("running")) {
+            GameID="R"+s[runTimes];
             out.write("R"+s[runTimes]+", ");
         } else if (type.equals("cycling")) {
+            GameID="C"+s[runTimes];
             out.write("C"+s[runTimes]+", ");
         }
 
@@ -205,6 +210,7 @@ public class Driver {
         printDetails();
         generateGameID();
         out.write(referee + ", " + timestamp + "\r\n");
+        //storeDecreasedScoreList.clear();
 
         // HashMap mapping athleteID,score and points of every athlete
         LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap<>();
@@ -230,7 +236,7 @@ public class Driver {
             System.out.println(s[0] + ", " + s[1] + ", " + value);
             out.write(s[0] + ", " + s[1] + ", " + value + "\r\n");
         }
-        storeDecreasedScoreList.clear();
+        //storeDecreasedScoreList.clear();
         out.write("\r\n");
         out.flush(); // put into the file
     }
@@ -348,5 +354,33 @@ public class Driver {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getReferee() {
+        return referee;
+    }
+
+    public void setReferee(String referee) {
+        this.referee = referee;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getGameID() {
+        return GameID;
+    }
+
+    public void setGameID(String gameID) {
+        GameID = gameID;
+    }
+
+    public ArrayList<Entry<String, String>> getStoreDecreasedScoreList() {
+        return storeDecreasedScoreList;
     }
 }

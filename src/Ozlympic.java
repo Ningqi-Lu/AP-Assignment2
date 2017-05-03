@@ -1,11 +1,16 @@
 import Game.Games;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -14,8 +19,12 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Ozympic Class
@@ -30,13 +39,16 @@ public class Ozlympic extends Application {
     Driver driver = new Driver();
     public static final int COLUMN_NUM = 5;
     public static String Type = null; //record the type of game selected in toggle group
-     Map<String, String> map = new HashMap<>();// a map to store the ID and score
-           
-    Button start = new Button("Start Game"); //create the start button
-    Button btnRestart =new Button("Restart"); //create the restart button
-    Button btnExit =new Button("Exit"); //create the exit button
-    
+    private ArrayList<Map.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>();// a Arraylist to store the ID and score
+
+    private final TableView<GameResultHistory> scoreTable = new TableView<>();
+    private final ObservableList<GameResultHistory> data = FXCollections.observableArrayList();
+
+    private Button start = new Button("Start Game"); //create the start button
+    private Button btnRestart =new Button("Restart"); //create the restart button
+
     public Ozlympic() throws IOException {
+
     }
 
     /*    public static void main(String[] args) throws IOException {
@@ -47,8 +59,7 @@ public class Ozlympic extends Application {
         }*/
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
-
-        Scene scene = new Scene(getFirstPage(), 500, 500);
+        Scene scene = new Scene(getFirstPage(), 500, 300);
         primaryStage.setTitle("Ozlympic Game"); // Set the stage title
         primaryStage.setScene(scene); // Place the scene in the stage
         primaryStage.setResizable(false);
@@ -58,9 +69,9 @@ public class Ozlympic extends Application {
     protected VBox getFirstPage() {
         // Hold two buttons in an HBox
         VBox titleInfo = new VBox();
-        titleInfo.setSpacing(10);
+        titleInfo.setSpacing(30);
         titleInfo.setAlignment(Pos.TOP_CENTER);
-        titleInfo.setPadding(new Insets(10));
+        titleInfo.setPadding(new Insets(20));
 
         //create the title of the game
         Text gameTitle = new Text(20, 20, "Welcome to the game Ozlympic!");
@@ -72,9 +83,9 @@ public class Ozlympic extends Application {
 
         //Hold three radiobutton in gameselect vBox
         HBox gameselect = new HBox();
-        gameselect.setSpacing(15);
+        gameselect.setSpacing(30);
         gameselect.setAlignment(Pos.TOP_CENTER);
-        gameselect.setPadding(new Insets(5));
+        gameselect.setPadding(new Insets(20));
 
         //create a radio box to select the game
         ToggleGroup group = new ToggleGroup();
@@ -93,6 +104,7 @@ public class Ozlympic extends Application {
         gameselect.getChildren().addAll(swimming, cycling, running);
 
         start.setAlignment(Pos.TOP_CENTER);
+        start.setMinWidth(100);
 
         // return the type selected
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
@@ -124,64 +136,72 @@ public class Ozlympic extends Application {
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.getChildren().addAll(titleInfo, gameselect, start);
+        vbox.getChildren().addAll(titleInfo, gameselect,start);
         return vbox;
     }
 
     protected void getResultsTable() {
         Stage s2 = new Stage();
         s2.setTitle("Game Results");
+        s2.setResizable(false);
 
         //draw the table which is used to show results
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setSpacing(10);
         vBox.setPadding(new Insets(10));
 
         //a label to show the results
         //create the title of the game
-        Text gameResult = new Text(20, 20, "Here is the results of Game!");
+        Text gameResult = new Text(20, 20, "Game Results");
         gameResult.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 25));
 
-        //a table to show the game results   
-        // use fully detailed type for Map.Entry<String, String> 
-        TableColumn<Map.Entry<String, String>, String> athleteIDCol = new TableColumn<>("Athlete ID");
-        column1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+        //create the table to store the data
+        scoreTable.setItems(data);
 
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-                // this callback returns property for just one cell, you can't use a loop here
-                // for first column we use key
-                return new SimpleStringProperty(p.getValue().getKey());
-            }
-        });
-
-        TableColumn<Map.Entry<String, String>, String> athleteScoreCol = new TableColumn<>("Athlete Score");
-        column2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-                // for second column we use value
-                return new SimpleStringProperty(p.getValue().getValue());
-            }
-        });
-        
+        TableColumn athleteIDCol = new TableColumn("Athlete ID");
+        athleteIDCol.setCellValueFactory(
+                new PropertyValueFactory<>("athleteID"));
+        TableColumn athleteScoreCol = new TableColumn("Athlete Score");
+        athleteScoreCol.setCellValueFactory(
+                new PropertyValueFactory<>("athleteScore"));
         TableColumn pointsCol = new TableColumn("Points");
+        pointsCol.setCellValueFactory(
+                new PropertyValueFactory<>("points"));
 
-        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(map.entrySet());
-        final TableView<Map.Entry<String,String>> scoreTable = new TableView<>(items);
-        scoreTable.setEditable(false);
-        scoreTable.setPadding(new Insets(5));
         //bind all data
-        scoreTable.getColumns().setAll(athleteIDCol, athleteScoreCol,pointsCol);
+        scoreTable.setEditable(false);
+        scoreTable.getColumns().addAll(athleteIDCol, athleteScoreCol,pointsCol);
+        scoreTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        scoreTable.setPadding(new Insets(5));
 
-        HBox hBox=new HBox();
-        hBox.setPadding(new Insets(10));
-        hBox.setAlignment(Pos.TOP_CENTER);
-        hBox.getChildren().addAll(btnRestart,btnExit);
+        btnRestart.setMinWidth(100);
 
-        vBox.getChildren().addAll(gameResult, scoreTable,hBox);
+        //add the detail of the game such as referee and play time
+        Label gameIdInfo = new Label(" GameID:");
+        Label refereeInfo = new Label("Referee:");
+        Label timeStamp = new Label("Time:");
+        Text gameIdShowInfo =new Text();
+        Text refereeShowInfo =new Text();
+        Text timeStampShowInfo =new Text();
 
-        Scene ss = new Scene(vBox, 400, 500);
+        gameIdShowInfo.setText(driver.getGameID());
+        refereeShowInfo.setText(driver.getReferee());
+        timeStampShowInfo.setText(driver.getTimestamp().toString());
+
+        HBox gameOtherInfo = new HBox();
+        gameOtherInfo.setSpacing(10);
+        gameOtherInfo.setAlignment(Pos.BASELINE_LEFT);
+        gameOtherInfo.setPadding(new Insets(10));
+        gameOtherInfo.getChildren().addAll(gameIdInfo,gameIdShowInfo,refereeInfo,refereeShowInfo,timeStamp,timeStampShowInfo);
+
+        Label isPredicted =new Label("Congratulation, your prediction is right!");
+
+        vBox.getChildren().addAll(gameResult, scoreTable,gameOtherInfo,isPredicted,btnRestart);
+
+        btnRestart.setOnAction(event -> s2.close());
+
+        Scene ss = new Scene(vBox, 400, 380);
         s2.setScene(ss);
         s2.show();
         //return s2;
@@ -212,8 +232,26 @@ public class Ozlympic extends Application {
         winnerSelect.setPadding(new Insets(5));
 
         //choice box to choose the winner
+
         driver.setType(Type);
         driver.showAthleteinSelectedGame();
+        driver.startGame();
+        driver.displayAllPoints();
+        this.storeDecreasedScoreList=driver.getStoreDecreasedScoreList();
+
+        // add the data to the table
+        data.add(new GameResultHistory(storeDecreasedScoreList.get(0).getKey(),
+                storeDecreasedScoreList.get(0).getValue(),"5"));
+        data.add(new GameResultHistory(storeDecreasedScoreList.get(1).getKey(),
+                storeDecreasedScoreList.get(1).getValue(),"2"));
+        data.add(new GameResultHistory(storeDecreasedScoreList.get(2).getKey(),
+                storeDecreasedScoreList.get(2).getValue(),"1"));
+
+        for (int i = 3; i <Games.attendAthlete.size() ; i++) {
+            data.add(new GameResultHistory(storeDecreasedScoreList.get(i).getKey(),
+                    storeDecreasedScoreList.get(i).getValue(),"0"));
+        }
+
         ChoiceBox<Object> cb = new ChoiceBox<>();
         for (int i = 0; i < Games.attendAthlete.size(); i++) {
             cb.getItems().addAll(FXCollections.observableArrayList(
