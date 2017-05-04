@@ -1,29 +1,26 @@
 import Game.Games;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -39,13 +36,19 @@ public class Ozlympic extends Application {
     Driver driver = new Driver();
     public static final int COLUMN_NUM = 5;
     public static String Type = null; //record the type of game selected in toggle group
+    private String playerchoice = null;// recored the player coice
     private ArrayList<Map.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>();// a Arraylist to store the ID and score
 
     private final TableView<GameResultHistory> scoreTable = new TableView<>();
-    private final ObservableList<GameResultHistory> data = FXCollections.observableArrayList();
+    private final ObservableList<GameResultHistory> data = FXCollections.observableArrayList();//a collection to get data
 
     private Button start = new Button("Start Game"); //create the start button
-    private Button btnRestart =new Button("Restart"); //create the restart button
+    private Button btnRestart = new Button("Restart"); //create the restart button
+    private TableColumn athleteIDCol = new TableColumn("Athlete ID");
+    private TableColumn athleteScoreCol = new TableColumn("Athlete Score");
+    private TableColumn pointsCol = new TableColumn("Points");
+
+    private int ifthreadFinish = 0;
 
     public Ozlympic() throws IOException {
 
@@ -59,10 +62,18 @@ public class Ozlympic extends Application {
         }*/
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
+
+        scoreTable.getColumns().addAll(athleteIDCol, athleteScoreCol, pointsCol);
+        scoreTable.setEditable(false);
+        athleteIDCol.setStyle("-fx-alignment: CENTER;");
+        athleteScoreCol.setStyle("-fx-alignment: CENTER;");
+        pointsCol.setStyle("-fx-alignment: CENTER;");
+
         Scene scene = new Scene(getFirstPage(), 500, 300);
         primaryStage.setTitle("Ozlympic Game"); // Set the stage title
         primaryStage.setScene(scene); // Place the scene in the stage
         primaryStage.setResizable(false);
+
         primaryStage.show(); // Display the stage
     }
 
@@ -112,14 +123,29 @@ public class Ozlympic extends Application {
             System.out.println(Type);
         });
 
+        //BorderPane created,put the hBox into the boarderPane
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        vbox.setAlignment(Pos.TOP_CENTER);
+
+        HBox hb=new HBox(initProgressBar());
+        hb.setSpacing(10);
+        hb.setAlignment(Pos.TOP_CENTER);
+        hb.setVisible(false);
+
         // Create and register the handler
         start.setOnAction((ActionEvent e) -> {
             if (group.getSelectedToggle() != null) {
-                try {
-                    getPredictStage();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                hb.setVisible(true);
+                start.setDisable(true);
+                thread.restart();
+                thread.setOnSucceeded(event -> {
+                    try {
+                        getPredictStage();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                });
             } else {
                 Stage s1 = new Stage();
                 Label warningMessage = new Label("Please select the game!");
@@ -132,11 +158,7 @@ public class Ozlympic extends Application {
             }
         });
 
-        //BorderPane created,put the hBox into the boarderPane
-        VBox vbox = new VBox();
-        vbox.setSpacing(10);
-        vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.getChildren().addAll(titleInfo, gameselect,start);
+        vbox.getChildren().addAll(titleInfo, gameselect, start, hb);
         return vbox;
     }
 
@@ -159,19 +181,19 @@ public class Ozlympic extends Application {
         //create the table to store the data
         scoreTable.setItems(data);
 
-        TableColumn athleteIDCol = new TableColumn("Athlete ID");
+
         athleteIDCol.setCellValueFactory(
                 new PropertyValueFactory<>("athleteID"));
-        TableColumn athleteScoreCol = new TableColumn("Athlete Score");
+
         athleteScoreCol.setCellValueFactory(
                 new PropertyValueFactory<>("athleteScore"));
-        TableColumn pointsCol = new TableColumn("Points");
+
         pointsCol.setCellValueFactory(
                 new PropertyValueFactory<>("points"));
 
         //bind all data
         scoreTable.setEditable(false);
-        scoreTable.getColumns().addAll(athleteIDCol, athleteScoreCol,pointsCol);
+        //scoreTable.getColumns().addAll(athleteIDCol, athleteScoreCol,pointsCol);
         scoreTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         scoreTable.setPadding(new Insets(5));
 
@@ -181,9 +203,9 @@ public class Ozlympic extends Application {
         Label gameIdInfo = new Label(" GameID:");
         Label refereeInfo = new Label("Referee:");
         Label timeStamp = new Label("Time:");
-        Text gameIdShowInfo =new Text();
-        Text refereeShowInfo =new Text();
-        Text timeStampShowInfo =new Text();
+        Text gameIdShowInfo = new Text();
+        Text refereeShowInfo = new Text();
+        Text timeStampShowInfo = new Text();
 
         gameIdShowInfo.setText(driver.getGameID());
         refereeShowInfo.setText(driver.getReferee());
@@ -193,13 +215,23 @@ public class Ozlympic extends Application {
         gameOtherInfo.setSpacing(10);
         gameOtherInfo.setAlignment(Pos.BASELINE_LEFT);
         gameOtherInfo.setPadding(new Insets(10));
-        gameOtherInfo.getChildren().addAll(gameIdInfo,gameIdShowInfo,refereeInfo,refereeShowInfo,timeStamp,timeStampShowInfo);
+        gameOtherInfo.getChildren().addAll(gameIdInfo, gameIdShowInfo, refereeInfo, refereeShowInfo, timeStamp, timeStampShowInfo);
 
-        Label isPredicted =new Label("Congratulation, your prediction is right!");
+        Label isPredicted = new Label();
+        isPredicted.setFont(Font.font("Courier", 14));
+        isPredicted.setTextFill(Color.RED);
 
-        vBox.getChildren().addAll(gameResult, scoreTable,gameOtherInfo,isPredicted,btnRestart);
+        vBox.getChildren().addAll(gameResult, scoreTable, gameOtherInfo, isPredicted, btnRestart);
+        if (playerchoice.equals(storeDecreasedScoreList.get(0).getKey())) {
+            isPredicted.setText("Congratulation, your prediction is right!");
+        } else {
+            isPredicted.setText("Sorry, next time you could predit the right one :)");
+        }
 
-        btnRestart.setOnAction(event -> s2.close());
+        btnRestart.setOnAction(event -> {
+            s2.close();
+            start.setDisable(false);
+        });
 
         Scene ss = new Scene(vBox, 400, 380);
         s2.setScene(ss);
@@ -207,6 +239,27 @@ public class Ozlympic extends Application {
         //return s2;
     }
 
+    protected void inputDataToTableView() {
+
+        if (storeDecreasedScoreList.size() != 0) {
+            // clear the table before reload the game
+            scoreTable.getItems().clear();
+            //input the tableview data
+            data.add(new GameResultHistory(storeDecreasedScoreList.get(0).getKey(),
+                    storeDecreasedScoreList.get(0).getValue(), "5"));
+            data.add(new GameResultHistory(storeDecreasedScoreList.get(1).getKey(),
+                    storeDecreasedScoreList.get(1).getValue(), "2"));
+            data.add(new GameResultHistory(storeDecreasedScoreList.get(2).getKey(),
+                    storeDecreasedScoreList.get(2).getValue(), "1"));
+
+            for (int i = 3; i < Games.attendAthlete.size(); i++) {
+                data.add(new GameResultHistory(storeDecreasedScoreList.get(i).getKey(),
+                        storeDecreasedScoreList.get(i).getValue(), "0"));
+            }
+        }
+
+
+    }
 
     protected void getPredictStage() throws IOException {
         //Driver driver = new Driver();
@@ -232,25 +285,12 @@ public class Ozlympic extends Application {
         winnerSelect.setPadding(new Insets(5));
 
         //choice box to choose the winner
-
         driver.setType(Type);
         driver.showAthleteinSelectedGame();
         driver.startGame();
         driver.displayAllPoints();
-        this.storeDecreasedScoreList=driver.getStoreDecreasedScoreList();
-
-        // add the data to the table
-        data.add(new GameResultHistory(storeDecreasedScoreList.get(0).getKey(),
-                storeDecreasedScoreList.get(0).getValue(),"5"));
-        data.add(new GameResultHistory(storeDecreasedScoreList.get(1).getKey(),
-                storeDecreasedScoreList.get(1).getValue(),"2"));
-        data.add(new GameResultHistory(storeDecreasedScoreList.get(2).getKey(),
-                storeDecreasedScoreList.get(2).getValue(),"1"));
-
-        for (int i = 3; i <Games.attendAthlete.size() ; i++) {
-            data.add(new GameResultHistory(storeDecreasedScoreList.get(i).getKey(),
-                    storeDecreasedScoreList.get(i).getValue(),"0"));
-        }
+        this.storeDecreasedScoreList = driver.getStoreDecreasedScoreList();
+        inputDataToTableView();
 
         ChoiceBox<Object> cb = new ChoiceBox<>();
         for (int i = 0; i < Games.attendAthlete.size(); i++) {
@@ -259,6 +299,20 @@ public class Ozlympic extends Application {
                             + Games.attendAthlete.get(i)[2] + " " + Games.attendAthlete.get(i)[3] + " "
                             + Games.attendAthlete.get(i)[4]));
         }
+
+        //set choice box default selected is first item
+        cb.getSelectionModel().selectFirst();
+        playerchoice = cb.getSelectionModel().getSelectedItem().toString().substring(0, 6);
+
+        //and event handling to record the predict athlete
+        cb.setOnAction(event -> {
+
+            String selectedAthlete = cb.getSelectionModel().getSelectedItem().toString();
+            playerchoice = selectedAthlete.substring(0, 6);
+
+            System.out.println(playerchoice);
+        });
+
 
         cb.setTooltip(new Tooltip("Select the winner!"));
         winnerSelect.getChildren().addAll(cb);
@@ -286,6 +340,46 @@ public class Ozlympic extends Application {
         predict.setScene(secondWindow);
         predict.setResizable(false);
         predict.show();
+    }
+
+    final Service thread = new Service<Integer>() {
+
+        public Task createTask() {
+            return new Task<Integer>() {
+                @Override
+                protected Integer call() throws Exception {
+                    int iterations;
+                    for (iterations = 0; iterations <= 1000; iterations += 4) {
+                        updateProgress(iterations, 1000);
+                        Thread.sleep(10);
+                        //System.out.println(iterations);
+                    }
+                    return iterations;
+                }
+            };
+        }
+
+    };
+
+    protected HBox initProgressBar() {
+        //create a progress bar and progress indicatior
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setMinSize(230, 20);
+
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressIndicator.setMinSize(20, 20);
+
+        //set value of progress bar and progress indicator through thread
+        progressBar.progressProperty().bind(thread.progressProperty());
+        progressIndicator.progressProperty().bind(thread.progressProperty());
+
+        HBox hb = new HBox();
+        hb.setPadding(new Insets(15));
+        hb.setAlignment(Pos.TOP_CENTER);
+        hb.setSpacing(5);
+        hb.getChildren().addAll(progressBar, progressIndicator);
+
+        return hb;
     }
 
     public static void main(String[] args) {
