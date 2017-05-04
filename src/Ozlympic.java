@@ -33,9 +33,8 @@ import java.util.Map;
  */
 public class Ozlympic extends Application {
 
-    Driver driver = new Driver();
-    public static final int COLUMN_NUM = 5;
-    public static String Type = null; //record the type of game selected in toggle group
+    private Driver driver = new Driver();
+    private static String Type = null; //record the type of game selected in toggle group
     private String playerchoice = null;// recored the player coice
     private ArrayList<Map.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>();// a Arraylist to store the ID and score
 
@@ -45,10 +44,8 @@ public class Ozlympic extends Application {
     private Button start = new Button("Start Game"); //create the start button
     private Button btnRestart = new Button("Restart"); //create the restart button
     private TableColumn athleteIDCol = new TableColumn("Athlete ID");
-    private TableColumn athleteScoreCol = new TableColumn("Athlete Score");
-    private TableColumn pointsCol = new TableColumn("Points");
-
-    private int ifthreadFinish = 0;
+    private TableColumn athleteScoreCol = new TableColumn<>("Athlete Score");
+    private TableColumn pointsCol = new TableColumn<>("Points");
 
     public Ozlympic() throws IOException {
 
@@ -69,7 +66,7 @@ public class Ozlympic extends Application {
         athleteScoreCol.setStyle("-fx-alignment: CENTER;");
         pointsCol.setStyle("-fx-alignment: CENTER;");
 
-        Scene scene = new Scene(getFirstPage(), 500, 300);
+        Scene scene = new Scene(getFirstPage(), 500, 350);
         primaryStage.setTitle("Ozlympic Game"); // Set the stage title
         primaryStage.setScene(scene); // Place the scene in the stage
         primaryStage.setResizable(false);
@@ -77,7 +74,7 @@ public class Ozlympic extends Application {
         primaryStage.show(); // Display the stage
     }
 
-    protected VBox getFirstPage() {
+    private VBox getFirstPage() {
         // Hold two buttons in an HBox
         VBox titleInfo = new VBox();
         titleInfo.setSpacing(30);
@@ -89,7 +86,8 @@ public class Ozlympic extends Application {
         gameTitle.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 25));
 
         // create the text to welcome the player and ask the selection
-        Text welcomeAndAsk = new Text(60, 60, "The game will be starting soon~ Please choose a game to run!");
+        Text welcomeAndAsk = new Text(60, 60, "The game will be starting soon~ \n   Please choose a game to run!");
+        welcomeAndAsk.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
         titleInfo.getChildren().addAll(gameTitle, welcomeAndAsk);
 
         //Hold three radiobutton in gameselect vBox
@@ -162,7 +160,7 @@ public class Ozlympic extends Application {
         return vbox;
     }
 
-    protected void getResultsTable() {
+    private void getResultsTable() {
         Stage s2 = new Stage();
         s2.setTitle("Game Results");
         s2.setResizable(false);
@@ -222,6 +220,7 @@ public class Ozlympic extends Application {
         isPredicted.setTextFill(Color.RED);
 
         vBox.getChildren().addAll(gameResult, scoreTable, gameOtherInfo, isPredicted, btnRestart);
+        vBox.setSpacing(10);
         if (playerchoice.equals(storeDecreasedScoreList.get(0).getKey())) {
             isPredicted.setText("Congratulation, your prediction is right!");
         } else {
@@ -239,7 +238,7 @@ public class Ozlympic extends Application {
         //return s2;
     }
 
-    protected void inputDataToTableView() {
+    private void inputDataToTableView() {
 
         if (storeDecreasedScoreList.size() != 0) {
             // clear the table before reload the game
@@ -261,7 +260,7 @@ public class Ozlympic extends Application {
 
     }
 
-    protected void getPredictStage() throws IOException {
+    private void getPredictStage() throws IOException {
         //Driver driver = new Driver();
         //create a new stage to pop up a new window
         Stage predict = new Stage();
@@ -274,7 +273,7 @@ public class Ozlympic extends Application {
         titleInfo.setPadding(new Insets(10));
 
         //create the title of the game
-        Text predictTitle = new Text(20, 20, "Here is the athlete will attend the game\nPlease select one to predicted!");
+        Text predictTitle = new Text(20, 20, "Here is the athlete will attend the game\n  Please select one to predicted!");
         predictTitle.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
         titleInfo.getChildren().addAll(predictTitle);
 
@@ -319,7 +318,7 @@ public class Ozlympic extends Application {
 
         //create the start button
         Button btnPredict = new Button("Predict");
-        btnPredict.setPadding(new Insets(10));
+        btnPredict.setMinWidth(100);
 
 
         //Put in all elements to a VBox
@@ -342,7 +341,7 @@ public class Ozlympic extends Application {
         predict.show();
     }
 
-    final Service thread = new Service<Integer>() {
+    private final Service<Integer> thread = new Service<Integer>() {
 
         public Task createTask() {
             return new Task<Integer>() {
@@ -361,10 +360,10 @@ public class Ozlympic extends Application {
 
     };
 
-    protected HBox initProgressBar() {
+    private HBox initProgressBar() {
         //create a progress bar and progress indicatior
         ProgressBar progressBar = new ProgressBar();
-        progressBar.setMinSize(230, 20);
+        progressBar.setMinSize(200, 20);
 
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setMinSize(20, 20);

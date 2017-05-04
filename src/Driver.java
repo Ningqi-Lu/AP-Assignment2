@@ -29,20 +29,21 @@ public class Driver {
     private String type = null; //the type of the game selected
     private int athleteChoice = 0;//the choice of athlete
     private String referee = null; // the string stored the current referee
-    Timestamp timestamp;//timestamp to get the current system date
-    String[] s = new String[100];//a String store the game ID
-    int runTimes=0;// a integer to store the game run times
-    String GameID =null; // store the game id of game
+    private Timestamp timestamp;//timestamp to get the current system date
+    private String[] s = new String[100];//a String store the game ID
+    private int runTimes=0;// a integer to store the game run times
+    private String GameID =null; // store the game id of game
+    private final int COLUMN_NUM=5;
 
-    public static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
+    private static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
 
-    public ArrayList<HashMap.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
+    private ArrayList<HashMap.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
 
-    File storedData = new File("gameResults.txt"); // create a new file
+    private File storedData = new File("gameResults.txt"); // create a new file
     //the operator of the file
-    BufferedWriter out = new BufferedWriter(new FileWriter(storedData));
+    private BufferedWriter out = new BufferedWriter(new FileWriter(storedData));
 
-    public Driver() throws IOException {
+    Driver() throws IOException {
         if (!storedData.exists()) {
             storedData.createNewFile();
         }// if the fire not exists,create new one
@@ -126,7 +127,7 @@ public class Driver {
      * @return list
      * @throws IOException
      */
-    public void startGame() throws IOException {
+    void startGame() throws IOException {
         System.out.println("Game Started..... ");
         runTimes++;
         storeDecreasedScoreList.clear();
@@ -134,7 +135,7 @@ public class Driver {
         getAthleteScore();
         ArrayList<Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
         //use collection to sort
-        Collections.sort(list, Comparator.comparing(Entry::getValue));
+        list.sort(Comparator.comparing(Entry::getValue));
 
         //sort the list and get the decrease sort
         for (Entry<String, String> mapping : list) {
@@ -289,7 +290,7 @@ public class Driver {
                     System.out.println("Please input a reasonable choice!");
                 } else {
                     System.out.println("The Athlete you predicted is:");
-                    for (int n = 0; n < Ozlympic.COLUMN_NUM; n++) {
+                    for (int n = 0; n < COLUMN_NUM; n++) {
                         System.out.print(Games.getAttendAthlete().get(athleteChoice - 1)[n] + " ");
                     }
                     break;
