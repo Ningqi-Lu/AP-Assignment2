@@ -74,6 +74,10 @@ public class Ozlympic extends Application {
         primaryStage.show(); // Display the stage
     }
 
+    /**
+     * get the main page of the game and call the progress bar method
+     * @return VBox holding the main button and text on the first page
+     */
     private VBox getFirstPage() {
         // Hold two buttons in an HBox
         VBox titleInfo = new VBox();
@@ -144,6 +148,9 @@ public class Ozlympic extends Application {
                         e1.printStackTrace();
                     }
                 });
+                /**
+                 * pop up a stage to warning the selection must be done
+                 */
             } else {
                 Stage s1 = new Stage();
                 Label warningMessage = new Label("Please select the game!");
@@ -160,6 +167,9 @@ public class Ozlympic extends Application {
         return vbox;
     }
 
+    /**
+     * get the result page which contains tableview and predict results and game details like referee
+     */
     private void getResultsTable() {
         Stage s2 = new Stage();
         s2.setTitle("Game Results");
@@ -189,7 +199,7 @@ public class Ozlympic extends Application {
         pointsCol.setCellValueFactory(
                 new PropertyValueFactory<>("points"));
 
-        //bind all data
+        //bind all data to the table view
         scoreTable.setEditable(false);
         //scoreTable.getColumns().addAll(athleteIDCol, athleteScoreCol,pointsCol);
         scoreTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -238,6 +248,9 @@ public class Ozlympic extends Application {
         //return s2;
     }
 
+    /**
+     * a method to call the class GameResultHistory inorder to bind the data with table view
+     */
     private void inputDataToTableView() {
 
         if (storeDecreasedScoreList.size() != 0) {
@@ -260,6 +273,11 @@ public class Ozlympic extends Application {
 
     }
 
+    /**
+     * a predict page which show all the athlete attend the game
+     * let the player select one to predict
+     * @throws IOException
+     */
     private void getPredictStage() throws IOException {
         //Driver driver = new Driver();
         //create a new stage to pop up a new window
@@ -341,6 +359,9 @@ public class Ozlympic extends Application {
         predict.show();
     }
 
+    /**
+     * a thread to control the progress bar
+     */
     private final Service<Integer> thread = new Service<Integer>() {
 
         public Task createTask() {
@@ -360,6 +381,10 @@ public class Ozlympic extends Application {
 
     };
 
+    /**
+     * a progress bar initiation method
+     * @return HBox to put on the firstpage
+     */
     private HBox initProgressBar() {
         //create a progress bar and progress indicatior
         ProgressBar progressBar = new ProgressBar();

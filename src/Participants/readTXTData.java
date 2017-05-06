@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 public class readTXTData {
 
     public static final int COLUMN_NUM = 5;//the column of the csv file
-    static ArrayList<String[]> lineList = new ArrayList<String[]>();// ArrayList used to store the row of csv file
+    static ArrayList<String[]> lineList = new ArrayList<String[]>();// ArrayList used to store the row of txt file
 
 
     //read the exact csv file，restore data and return ArrayList
@@ -55,9 +55,6 @@ public class readTXTData {
         return lineList;
     }
 
-    public static void setLineList(ArrayList<String[]> lineList) {
-        readTXTData.lineList = lineList;
-    }
 }
 
 
