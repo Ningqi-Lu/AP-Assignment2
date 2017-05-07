@@ -49,7 +49,7 @@ public class readDBdata {
         }
     }
 
-    private void initialiseResult() throws SQLException {
+/*    private void initialiseResult() throws SQLException {
         if(!hasResultData){
             hasResultData=true;
             Statement state =con.createStatement();
@@ -65,7 +65,7 @@ public class readDBdata {
                 prep.execute();
             }
         }
-    }
+    }*/
 
 
 }

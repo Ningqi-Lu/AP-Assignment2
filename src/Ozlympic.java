@@ -1,4 +1,5 @@
 import Game.Games;
+import com.sun.javafx.font.freetype.HBGlyphLayout;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.text.LabelView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -43,9 +46,11 @@ public class Ozlympic extends Application {
 
     private Button start = new Button("Start Game"); //create the start button
     private Button btnRestart = new Button("Restart"); //create the restart button
+    private Button showAllResults=new Button("All Results");
     private TableColumn athleteIDCol = new TableColumn("Athlete ID");
     private TableColumn athleteScoreCol = new TableColumn<>("Athlete Score");
     private TableColumn pointsCol = new TableColumn<>("Points");
+    VBox vBox=new VBox();// a VBox to hold all the game results
 
     public Ozlympic() throws IOException {
 
@@ -72,6 +77,12 @@ public class Ozlympic extends Application {
         primaryStage.setResizable(false);
 
         primaryStage.show(); // Display the stage
+    }
+
+    private HBox showPastGameResult(){
+        showPastGameResult();
+        HBox x=new HBox();
+        return x;
     }
 
     /**
@@ -118,17 +129,28 @@ public class Ozlympic extends Application {
 
         start.setAlignment(Pos.TOP_CENTER);
         start.setMinWidth(100);
+        start.setDisable(true);
+
+        showAllResults.setAlignment(Pos.TOP_CENTER);
+        showAllResults.setMinWidth(100);
+        showAllResults.setDisable(true);
 
         // return the type selected
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             Type = group.getSelectedToggle().getUserData().toString();
             System.out.println(Type);
+            start.setDisable(false);
         });
 
         //BorderPane created,put the hBox into the boarderPane
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         vbox.setAlignment(Pos.TOP_CENTER);
+
+        HBox hbtn=new HBox();
+        hbtn.setSpacing(30);
+        hbtn.setAlignment(Pos.TOP_CENTER);
+        hbtn.getChildren().addAll(start,showAllResults);
 
         HBox hb=new HBox(initProgressBar());
         hb.setSpacing(10);
@@ -148,22 +170,34 @@ public class Ozlympic extends Application {
                         e1.printStackTrace();
                     }
                 });
-                /**
-                 * pop up a stage to warning the selection must be done
-                 */
             } else {
-                Stage s1 = new Stage();
+                start.setDisable(true);
+               /* Stage s1 = new Stage();
                 Label warningMessage = new Label("Please select the game!");
                 warningMessage.setAlignment(Pos.CENTER);
                 Scene ss = new Scene(warningMessage, 150, 50);
                 s1.setTitle("WARNING");
                 s1.setScene(ss);
                 s1.setResizable(false);
-                s1.show();
+                s1.show();*/
             }
         });
 
-        vbox.getChildren().addAll(titleInfo, gameselect, start, hb);
+        // Create and register the handler
+        showAllResults.setOnAction((ActionEvent e) -> {
+            Stage stage =new Stage();
+            if(vBox.getScene()==null){
+                Scene s=new Scene(vBox);
+                stage.setScene(s);
+            }else{
+                stage.setScene(vBox.getScene());
+            }
+            stage.setTitle("All Game Results");
+
+            stage.show();
+        });
+
+        vbox.getChildren().addAll(titleInfo, gameselect, hbtn, hb);
         return vbox;
     }
 
@@ -207,6 +241,35 @@ public class Ozlympic extends Application {
 
         btnRestart.setMinWidth(100);
 
+        Label isPredicted = new Label();
+        isPredicted.setFont(Font.font("Courier", 14));
+        isPredicted.setTextFill(Color.RED);
+
+        vBox.getChildren().addAll(gameResult, scoreTable, gamedetailInfoShow(), isPredicted, btnRestart);
+        vBox.setSpacing(10);
+        if (playerchoice.equals(storeDecreasedScoreList.get(0).getKey())) {
+            isPredicted.setText("Congratulation, your prediction is right!");
+        } else {
+            isPredicted.setText("Sorry, next time you could predit the right one :)");
+        }
+
+        btnRestart.setOnAction(event -> {
+            s2.close();
+            start.setDisable(false);
+            showAllResults.setDisable(false);
+        });
+
+        Scene ss = new Scene(vBox, 400, 380);
+        s2.setScene(ss);
+        s2.show();
+        //return s2;
+    }
+
+    /**
+     * show the game info like game ID, referee ID and time stamp
+     * @return HBox Node contain all the information
+     */
+    private HBox gamedetailInfoShow(){
         //add the detail of the game such as referee and play time
         Label gameIdInfo = new Label(" GameID:");
         Label refereeInfo = new Label("Referee:");
@@ -222,32 +285,26 @@ public class Ozlympic extends Application {
         HBox gameOtherInfo = new HBox();
         gameOtherInfo.setSpacing(10);
         gameOtherInfo.setAlignment(Pos.BASELINE_LEFT);
-        gameOtherInfo.setPadding(new Insets(10));
+        //gameOtherInfo.setPadding(new Insets(10));
+
         gameOtherInfo.getChildren().addAll(gameIdInfo, gameIdShowInfo, refereeInfo, refereeShowInfo, timeStamp, timeStampShowInfo);
-
-        Label isPredicted = new Label();
-        isPredicted.setFont(Font.font("Courier", 14));
-        isPredicted.setTextFill(Color.RED);
-
-        vBox.getChildren().addAll(gameResult, scoreTable, gameOtherInfo, isPredicted, btnRestart);
-        vBox.setSpacing(10);
-        if (playerchoice.equals(storeDecreasedScoreList.get(0).getKey())) {
-            isPredicted.setText("Congratulation, your prediction is right!");
-        } else {
-            isPredicted.setText("Sorry, next time you could predit the right one :)");
-        }
-
-        btnRestart.setOnAction(event -> {
-            s2.close();
-            start.setDisable(false);
-        });
-
-        Scene ss = new Scene(vBox, 400, 380);
-        s2.setScene(ss);
-        s2.show();
-        //return s2;
+        return  gameOtherInfo;
     }
 
+    private HBox showFirstThreeAthlete(){
+
+        Label athleteID = new Label(" The winners of game are: ");
+        Label firstAtheleteID = new Label(storeDecreasedScoreList.get(0).getKey());
+        Label secondAtheleteID = new Label(storeDecreasedScoreList.get(1).getKey());
+        Label thirdAtheleteID = new Label(storeDecreasedScoreList.get(2).getKey());
+
+        HBox vb=new HBox();
+        vb.setSpacing(10);
+        vb.setAlignment(Pos.TOP_LEFT);
+
+        vb.getChildren().addAll(athleteID,firstAtheleteID,secondAtheleteID,thirdAtheleteID);
+        return vb;
+    }
     /**
      * a method to call the class GameResultHistory inorder to bind the data with table view
      */
@@ -347,6 +404,12 @@ public class Ozlympic extends Application {
 
         // Create and register the handler
         btnPredict.setOnAction((ActionEvent e) -> {
+            //a vbox to hold all the game results
+            vBox.setAlignment(Pos.TOP_LEFT);
+            vBox.setPadding(new Insets(15));
+            vBox.setSpacing(5);
+            Label space=new Label("                            ");
+            vBox.getChildren().addAll(gamedetailInfoShow(),showFirstThreeAthlete(),space);
             predict.close();
             getResultsTable();
 
