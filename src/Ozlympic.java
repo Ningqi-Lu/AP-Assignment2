@@ -301,6 +301,7 @@ public class Ozlympic extends Application {
         HBox vb=new HBox();
         vb.setSpacing(10);
         vb.setAlignment(Pos.TOP_LEFT);
+        vb.setStyle("-fx-background-color:#90b7dd;");
 
         vb.getChildren().addAll(athleteID,firstAtheleteID,secondAtheleteID,thirdAtheleteID);
         return vb;
