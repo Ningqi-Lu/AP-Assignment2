@@ -9,17 +9,8 @@ import java.sql.SQLException;
 public class dbtest {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ResultSet rs;
-        readDBdata readDBdata=new readDBdata();
-
-        try {
-            rs= readDBdata.displayAthete();
-            while (rs.next()){
-                System.out.println(rs.getString("aID")+" "+rs.getString("aname"));
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        readDBdata.getLineList();
     }
 }

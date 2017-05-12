@@ -1,6 +1,7 @@
 package Game;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /*
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public abstract class Games {
 
-    public abstract void readDataFromAthlete() throws IOException; // abstract method to read total
+    public abstract void readDataFromAthlete() throws IOException, SQLException, ClassNotFoundException; // abstract method to read total
     // potential attending athletes
 
     public static ArrayList<String[]> attendAthlete = new ArrayList<String[]>(); //attend athlete in every game

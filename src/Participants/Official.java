@@ -1,6 +1,7 @@
 package Participants;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static Participants.readTXTData.COLUMN_NUM;
@@ -33,9 +34,9 @@ public class Official extends Participant{
      * data reader of Official
      * @throws IOException
      */
-    public static void readOfficialdata() throws IOException {
+    public static void readOfficialdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempOf = readTXTData.getLineList();
+        ArrayList<String[]> tempOf = readDBdata.getLineList();
 
         for (int i = 0; i < tempOf.size(); i++) {
             if (tempOf.get(i)[1].equals("OFFICIAL")) {
@@ -54,7 +55,7 @@ public class Official extends Participant{
      * @return official
      * @throws IOException
      */
-    public static ArrayList<String[]> getOfficial() throws IOException {
+    public static ArrayList<String[]> getOfficial() throws IOException, SQLException, ClassNotFoundException {
         official.clear();
         readOfficialdata();
         return official;

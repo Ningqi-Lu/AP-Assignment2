@@ -1,6 +1,7 @@
 package Participants;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static Participants.readTXTData.COLUMN_NUM;
@@ -60,9 +61,9 @@ public class Sprinter extends Athlete{
      * data reader of sprinter athlete
      * @throws IOException
      */
-    public static void readSprinterdata() throws IOException {
+    public static void readSprinterdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempSp = readTXTData.getLineList();
+        ArrayList<String[]> tempSp = readDBdata.getLineList();
 
         for (int i = 0; i < tempSp.size(); i++) {
             if (tempSp.get(i)[1].equals("SPRINTER")) {
@@ -81,7 +82,7 @@ public class Sprinter extends Athlete{
      * @return sprinter
      * @throws IOException
      */
-    public static ArrayList<String[]> getSprinter() throws IOException {
+    public static ArrayList<String[]> getSprinter() throws IOException, SQLException, ClassNotFoundException {
         sprinter.clear();
         readSprinterdata();
         return sprinter;

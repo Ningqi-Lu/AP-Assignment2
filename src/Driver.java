@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
@@ -171,7 +172,13 @@ public class Driver {
 
         timestamp = new Timestamp(System.currentTimeMillis());  //the run time of this game
         System.out.println("The referee of this game is:");
-        getRandomOfficial();
+        try {
+            getRandomOfficial();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println(referee);
         System.out.println("here is the run time of this game: ");
         System.out.println(timestamp);
@@ -245,7 +252,7 @@ public class Driver {
     /**
      * Show the athlete attending each game
      */
-    public void showAthleteinSelectedGame() throws IOException {
+    public void showAthleteinSelectedGame() throws IOException, SQLException, ClassNotFoundException {
         //type = selectGameLoop();
         System.out.println("List below is the name of athlete attend " + type + ":");
         System.out.println("===================================================");
@@ -344,7 +351,7 @@ public class Driver {
      *
      * @throws IOException
      */
-    public void getRandomOfficial() throws IOException {
+    public void getRandomOfficial() throws IOException, SQLException, ClassNotFoundException {
         int i = (int) (Math.random() * Official.getOfficial().size());
         referee = new String(Official.getOfficial().get(i)[0]);
     }

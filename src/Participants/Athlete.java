@@ -8,13 +8,36 @@ package Participants;
  * Modified by both Ningqi Lu and Yingzhi Lu
  */
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Athlete extends Participant{
 
     private String score; // the score of every athlete
     private Integer point; //the point of every athlete
+    public static ArrayList<String[]> athleteALL; //cyclist arraylist
+
+    static {
+        try {
+            athleteALL = new ArrayList<String[]>(readDBdata.getLineList());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static HashMap<String,Integer> AthletePointHashMap = new HashMap<>();
+
+
+    public static ArrayList<String[]> getAthleteALL() {
+        return athleteALL;
+    }
+
+    public static void setAthleteALL(ArrayList<String[]> athleteALL) {
+        Athlete.athleteALL = athleteALL;
+    }
 
     /**
      * Constructor

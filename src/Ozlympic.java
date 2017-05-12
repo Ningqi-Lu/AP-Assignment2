@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 
 import javax.swing.text.LabelView;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -167,6 +168,10 @@ public class Ozlympic extends Application {
                     try {
                         getPredictStage();
                     } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    } catch (ClassNotFoundException e1) {
                         e1.printStackTrace();
                     }
                 });
@@ -327,8 +332,6 @@ public class Ozlympic extends Application {
                         storeDecreasedScoreList.get(i).getValue(), "0"));
             }
         }
-
-
     }
 
     /**
@@ -336,7 +339,7 @@ public class Ozlympic extends Application {
      * let the player select one to predict
      * @throws IOException
      */
-    private void getPredictStage() throws IOException {
+    private void getPredictStage() throws IOException, SQLException, ClassNotFoundException {
         //Driver driver = new Driver();
         //create a new stage to pop up a new window
         Stage predict = new Stage();

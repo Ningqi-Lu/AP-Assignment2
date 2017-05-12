@@ -5,6 +5,7 @@ import Participants.Swimmer;
 import Participants.superAthlete;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -40,7 +41,7 @@ public class Swimming extends Games implements Complete {
      * @throws IOException
      */
     @Override
-    public void readDataFromAthlete() throws IOException {
+    public void readDataFromAthlete() throws IOException, SQLException, ClassNotFoundException {
 
        // System.out.println(Swimmer.getSwimmer().size());//12
        // System.out.println(Sprinter.getSprinter().size());//17

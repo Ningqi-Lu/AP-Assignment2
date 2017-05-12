@@ -2,6 +2,7 @@ package Participants;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static Participants.readTXTData.COLUMN_NUM;
@@ -62,9 +63,9 @@ public class Swimmer extends Athlete{
      * data reader of Swimmer athlete
      * @throws IOException
      */
-    public static void readSwimmerdata() throws IOException {
+    public static void readSwimmerdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempSw = readTXTData.getLineList();
+        ArrayList<String[]> tempSw = readDBdata.getLineList();
 
         for (int i = 0; i < tempSw.size(); i++) {
             if (tempSw.get(i)[1].equals("SWIMMER")) {
@@ -83,7 +84,7 @@ public class Swimmer extends Athlete{
      * @return Swimmer
      * @throws IOException
      */
-    public static ArrayList<String[]> getSwimmer() throws IOException {
+    public static ArrayList<String[]> getSwimmer() throws IOException, SQLException, ClassNotFoundException {
         swimmer.clear();
         readSwimmerdata();
         return swimmer;
