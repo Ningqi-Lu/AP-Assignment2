@@ -36,7 +36,7 @@ public class Driver {
     private String GameID =null; // store the game id of game
     private final int COLUMN_NUM=5;
 
-    private static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
+    //private static HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
 
     private ArrayList<HashMap.Entry<String, String>> storeDecreasedScoreList = new ArrayList<>(); // an ArrayList to store the top 3 athlete
 
@@ -95,6 +95,8 @@ public class Driver {
      */
     public HashMap getAthleteScore() {
 
+        HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
+        scoreMap.clear();
         String[] score = new String[Games.getAttendAthlete().size()];
         switch (type) {
             case "swimming":
@@ -132,9 +134,9 @@ public class Driver {
         System.out.println("Game Started..... ");
         runTimes++;
         storeDecreasedScoreList.clear();
-        getAthleteScore().clear();
-        getAthleteScore();
-        ArrayList<Entry<String, String>> list = new ArrayList<>(scoreMap.entrySet());
+        //getAthleteScore().clear();
+        //getAthleteScore();
+        ArrayList<Entry<String, String>> list = new ArrayList<>(getAthleteScore().entrySet());
         //use collection to sort
         list.sort(Comparator.comparing(Entry::getValue));
 
@@ -214,12 +216,11 @@ public class Driver {
      * @return a LinkedHashMap (stored game data in order)
      * @throws IOException
      */
-    public void displayAllPoints() throws IOException {
+    public void  displayAllPoints() throws IOException {
         printDetails();
         generateGameID();
         out.write(referee + ", " + timestamp + "\r\n");
         //storeDecreasedScoreList.clear();
-
         // HashMap mapping athleteID,score and points of every athlete
         LinkedHashMap<Entry<String, String>, Integer> orderedScoreMap = new LinkedHashMap<>();
         orderedScoreMap.clear();
@@ -236,7 +237,7 @@ public class Driver {
             orderedScoreMap.put(storeDecreasedScoreList.get(i), 0);
             i++;
         }
-        //print out all the data in order
+       //print out all the data in order
         for (Entry<Entry<String, String>, Integer> entryAll : orderedScoreMap.entrySet()) {
             String key = String.valueOf(entryAll.getKey());
             String s[] = key.split("=");

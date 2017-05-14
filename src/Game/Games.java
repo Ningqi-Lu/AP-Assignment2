@@ -34,7 +34,8 @@ public abstract class Games {
         //System.out.println(ad.size());
         ArrayList<Integer> judgeRepeatedList = new ArrayList<Integer>(); //a list used to judge if this row number is repeated
         //judgeRepeatedList.clear();
-        int num = (int) (Math.random() * 4 + 4); //the number of athletes will attend the game
+        int num = (int) (Math.random() * 4 + 12); //the number of athletes will attend the game
+        //int num=12;
         if (num < 4) {
             System.out.println("Athlete number lower than 4, game cancelled ");
         } else {
@@ -73,6 +74,8 @@ public abstract class Games {
     }
 
     public static void setAttendAthlete(ArrayList<String[]> attendAthlete) {
+        //attendAthlete.clear();
+        //Games.attendAthlete.clear();
         Games.attendAthlete = attendAthlete;
     }
 }

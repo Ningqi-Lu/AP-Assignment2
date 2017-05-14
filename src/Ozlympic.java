@@ -1,5 +1,4 @@
 import Game.Games;
-import com.sun.javafx.font.freetype.HBGlyphLayout;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -21,10 +20,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import javax.swing.text.LabelView;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 /*
@@ -44,14 +43,17 @@ public class Ozlympic extends Application {
 
     private final TableView<GameResultHistory> scoreTable = new TableView<>();
     private final ObservableList<GameResultHistory> data = FXCollections.observableArrayList();//a collection to get data
+    //private ArrayList<String[]> selectedAttendAthlete = new ArrayList<String[]>(); //attend athlete in every game
+    private ArrayList<String[]> attendAthlete = new ArrayList<String[]>(); //attend athlete in every game
 
     private Button start = new Button("Start Game"); //create the start button
+    private Button starting = new Button("Ready");//create button to ready the game
     private Button btnRestart = new Button("Restart"); //create the restart button
-    private Button showAllResults=new Button("All Results");
+    private Button showAllResults = new Button("All Results");
     private TableColumn athleteIDCol = new TableColumn("Athlete ID");
     private TableColumn athleteScoreCol = new TableColumn<>("Athlete Score");
     private TableColumn pointsCol = new TableColumn<>("Points");
-    VBox vBox=new VBox();// a VBox to hold all the game results
+    VBox vBox = new VBox();// a VBox to hold all the game results
 
     public Ozlympic() throws IOException {
 
@@ -80,14 +82,15 @@ public class Ozlympic extends Application {
         primaryStage.show(); // Display the stage
     }
 
-    private HBox showPastGameResult(){
+    private HBox showPastGameResult() {
         showPastGameResult();
-        HBox x=new HBox();
+        HBox x = new HBox();
         return x;
     }
 
     /**
      * get the main page of the game and call the progress bar method
+     *
      * @return VBox holding the main button and text on the first page
      */
     private VBox getFirstPage() {
@@ -148,25 +151,31 @@ public class Ozlympic extends Application {
         vbox.setSpacing(10);
         vbox.setAlignment(Pos.TOP_CENTER);
 
-        HBox hbtn=new HBox();
+        HBox hbtn = new HBox();
         hbtn.setSpacing(30);
         hbtn.setAlignment(Pos.TOP_CENTER);
-        hbtn.getChildren().addAll(start,showAllResults);
+        hbtn.getChildren().addAll(start, showAllResults);
 
-        HBox hb=new HBox(initProgressBar());
+        HBox hb = new HBox(initProgressBar());
         hb.setSpacing(10);
         hb.setAlignment(Pos.TOP_CENTER);
         hb.setVisible(false);
 
         // Create and register the handler
         start.setOnAction((ActionEvent e) -> {
+            //selectedAttendAthlete.clear();
             if (group.getSelectedToggle() != null) {
                 hb.setVisible(true);
                 start.setDisable(true);
                 thread.restart();
                 thread.setOnSucceeded(event -> {
                     try {
-                        getPredictStage();
+                        driver.setType(Type);
+                        driver.showAthleteinSelectedGame();
+                        //System.out.println(Games.getAttendAthlete().size());
+                        attendAthlete = Games.getAttendAthlete();
+                        selectAthleteByPlayer();
+                        //getPredictStage();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     } catch (SQLException e1) {
@@ -177,24 +186,16 @@ public class Ozlympic extends Application {
                 });
             } else {
                 start.setDisable(true);
-               /* Stage s1 = new Stage();
-                Label warningMessage = new Label("Please select the game!");
-                warningMessage.setAlignment(Pos.CENTER);
-                Scene ss = new Scene(warningMessage, 150, 50);
-                s1.setTitle("WARNING");
-                s1.setScene(ss);
-                s1.setResizable(false);
-                s1.show();*/
             }
         });
 
         // Create and register the handler
         showAllResults.setOnAction((ActionEvent e) -> {
-            Stage stage =new Stage();
-            if(vBox.getScene()==null){
-                Scene s=new Scene(vBox);
+            Stage stage = new Stage();
+            if (vBox.getScene() == null) {
+                Scene s = new Scene(vBox);
                 stage.setScene(s);
-            }else{
+            } else {
                 stage.setScene(vBox.getScene());
             }
             stage.setTitle("All Game Results");
@@ -260,6 +261,9 @@ public class Ozlympic extends Application {
 
         btnRestart.setOnAction(event -> {
             s2.close();
+            attendAthlete.clear();
+            storeDecreasedScoreList.clear();
+            //selectedAttendAthlete.clear();
             start.setDisable(false);
             showAllResults.setDisable(false);
         });
@@ -272,9 +276,10 @@ public class Ozlympic extends Application {
 
     /**
      * show the game info like game ID, referee ID and time stamp
+     *
      * @return HBox Node contain all the information
      */
-    private HBox gamedetailInfoShow(){
+    private HBox gamedetailInfoShow() {
         //add the detail of the game such as referee and play time
         Label gameIdInfo = new Label(" GameID:");
         Label refereeInfo = new Label("Referee:");
@@ -293,24 +298,138 @@ public class Ozlympic extends Application {
         //gameOtherInfo.setPadding(new Insets(10));
 
         gameOtherInfo.getChildren().addAll(gameIdInfo, gameIdShowInfo, refereeInfo, refereeShowInfo, timeStamp, timeStampShowInfo);
-        return  gameOtherInfo;
+        return gameOtherInfo;
     }
 
-    private HBox showFirstThreeAthlete(){
+    private HBox showFirstThreeAthlete() {
 
         Label athleteID = new Label(" The winners of game are: ");
         Label firstAtheleteID = new Label(storeDecreasedScoreList.get(0).getKey());
         Label secondAtheleteID = new Label(storeDecreasedScoreList.get(1).getKey());
         Label thirdAtheleteID = new Label(storeDecreasedScoreList.get(2).getKey());
 
-        HBox vb=new HBox();
+        HBox vb = new HBox();
         vb.setSpacing(10);
         vb.setAlignment(Pos.TOP_LEFT);
         vb.setStyle("-fx-background-color:#90b7dd;");
 
-        vb.getChildren().addAll(athleteID,firstAtheleteID,secondAtheleteID,thirdAtheleteID);
+        vb.getChildren().addAll(athleteID, firstAtheleteID, secondAtheleteID, thirdAtheleteID);
         return vb;
     }
+
+    public void selectAthleteByPlayer() throws SQLException, IOException, ClassNotFoundException {
+        Stage selectAthlete = new Stage();
+        /*attendAthlete.clear();
+        attendAthlete = Games.getAttendAthlete();*/
+
+        //selectAthlete stage title
+        VBox titleInfo = new VBox();
+        titleInfo.setSpacing(10);
+        titleInfo.setAlignment(Pos.TOP_CENTER);
+        titleInfo.setPadding(new Insets(10));
+
+        Text selectTitle = new Text(20, 20, "Here is the athlete will attend the game\n  Please select 4-8 athletes to attend!");
+        selectTitle.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
+        titleInfo.getChildren().addAll(selectTitle);
+
+        FlowPane select = new FlowPane();
+        select.setVgap(20);
+        select.setHgap(20);
+        select.setAlignment(Pos.TOP_LEFT);
+        select.setPadding(new Insets(30));
+        select.getChildren().add(titleInfo);
+
+        /*driver.setType(Type);
+        driver.showAthleteinSelectedGame();*/
+        //driver.startGame();
+        //driver.displayAllPoints();
+        //this.storeDecreasedScoreList = driver.getStoreDecreasedScoreList();
+
+        String[] names = new String[attendAthlete.size()];
+        CheckBox[] cbs = new CheckBox[names.length];
+        HashSet<String> selectedAthleteID = new HashSet<>();
+
+
+        for (int i = 0; i < names.length; i++) {
+            //System.out.println(attendAthlete.size());
+            names[i] = attendAthlete.get(i)[0];
+        }
+
+        for (int i = 0; i < names.length; i++) {
+
+            cbs[i] = new CheckBox(names[i]);
+            cbs[i].setSelected(false);
+            select.getChildren().add(cbs[i]);
+            int finalI = i;
+            cbs[i].selectedProperty().addListener((observable, oldValue, newValue) -> {
+                        if (cbs[finalI].isSelected()) {
+                            System.out.println(cbs[finalI].getText());
+                            selectedAthleteID.add(cbs[finalI].getText());
+                            System.out.println(selectedAthleteID);
+                            //System.out.println(attendAthlete.get(finalI));
+                        } else {
+                            System.out.println(cbs[finalI].getText());
+                            selectedAthleteID.remove(cbs[finalI].getText());
+                            System.out.println(selectedAthleteID);
+                        }
+                    }
+            );
+        }
+
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.TOP_CENTER);
+        hBox.setMinSize(300, 50);
+        hBox.getChildren().add(starting);
+
+        select.getChildren().add(hBox);
+
+        starting.setOnAction(event -> {
+
+            ArrayList<String[]> selectedAttendAthlete = new ArrayList<>(); //attend athlete in every game
+            for (int i = 0; i < names.length; i++) {
+                if (selectedAthleteID.contains(attendAthlete.get(i)[0])) {
+                    selectedAttendAthlete.add(attendAthlete.get(i));
+                }
+            }
+            if(selectedAttendAthlete.size()>=4 && selectedAttendAthlete.size()<=8){
+                Games.setAttendAthlete(selectedAttendAthlete);
+                try {
+                    driver.startGame();
+                    driver.displayAllPoints();
+                    this.storeDecreasedScoreList = driver.getStoreDecreasedScoreList();
+                    inputDataToTableView();
+                    getPredictStage();
+                    //Games.getAttendAthlete().clear();
+                    selectAthlete.close();
+                    selectedAttendAthlete.clear();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                Stage stage=new Stage();
+                Label warning =new Label("Please select athletes between 4-8");
+                warning.setPadding(new Insets(30));
+                warning.setAlignment(Pos.CENTER);
+                warning.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
+                Scene scene=new Scene(warning,300,100);
+                stage.setScene(scene);
+                stage.setTitle("WARNING");
+                stage.show();
+            }
+
+        });
+
+        Scene selectWindow = new Scene(select, 360, 300);
+        selectAthlete.setTitle("Choose the player");
+        selectAthlete.setResizable(false);
+        selectAthlete.setScene(selectWindow);
+        selectAthlete.show();
+    }
+
     /**
      * a method to call the class GameResultHistory inorder to bind the data with table view
      */
@@ -337,6 +456,7 @@ public class Ozlympic extends Application {
     /**
      * a predict page which show all the athlete attend the game
      * let the player select one to predict
+     *
      * @throws IOException
      */
     private void getPredictStage() throws IOException, SQLException, ClassNotFoundException {
@@ -352,7 +472,7 @@ public class Ozlympic extends Application {
         titleInfo.setPadding(new Insets(10));
 
         //create the title of the game
-        Text predictTitle = new Text(20, 20, "Here is the athlete will attend the game\n  Please select one to predicted!");
+        Text predictTitle = new Text(20, 20, "Here is the athlete you selected! \n  Please select one to predicted!");
         predictTitle.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
         titleInfo.getChildren().addAll(predictTitle);
 
@@ -363,12 +483,12 @@ public class Ozlympic extends Application {
         winnerSelect.setPadding(new Insets(5));
 
         //choice box to choose the winner
-        driver.setType(Type);
+       /* driver.setType(Type);
         driver.showAthleteinSelectedGame();
         driver.startGame();
         driver.displayAllPoints();
         this.storeDecreasedScoreList = driver.getStoreDecreasedScoreList();
-        inputDataToTableView();
+        inputDataToTableView();*/
 
         ChoiceBox<Object> cb = new ChoiceBox<>();
         for (int i = 0; i < Games.attendAthlete.size(); i++) {
@@ -412,8 +532,8 @@ public class Ozlympic extends Application {
             vBox.setAlignment(Pos.TOP_LEFT);
             vBox.setPadding(new Insets(15));
             vBox.setSpacing(5);
-            Label space=new Label("                            ");
-            vBox.getChildren().addAll(gamedetailInfoShow(),showFirstThreeAthlete(),space);
+            Label space = new Label("                            ");
+            vBox.getChildren().addAll(gamedetailInfoShow(), showFirstThreeAthlete(), space);
             predict.close();
             getResultsTable();
 
@@ -450,6 +570,7 @@ public class Ozlympic extends Application {
 
     /**
      * a progress bar initiation method
+     *
      * @return HBox to put on the firstpage
      */
     private HBox initProgressBar() {
