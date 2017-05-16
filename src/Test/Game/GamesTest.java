@@ -1,8 +1,11 @@
 package Test.Game;
 
-import org.junit.Test; 
+import Game.Games;
+import org.junit.Test;
 import org.junit.Before; 
-import org.junit.After; 
+import org.junit.After;
+
+import java.util.ArrayList;
 
 /** 
 * Games Tester. 
@@ -11,7 +14,9 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class GamesTest { 
+public class GamesTest {
+    Games games;
+    ArrayList<String[]> attendAthlete;
 
 @Before
 public void before() throws Exception { 
@@ -27,7 +32,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testReadDataFromAthlete() throws Exception { 
+public void testReadDataFromAthlete() throws Exception {
+    games.readDataFromAthlete();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +43,8 @@ public void testReadDataFromAthlete() throws Exception {
 * 
 */ 
 @Test
-public void testSelectRandomNumberAthlete() throws Exception { 
+public void testSelectRandomNumberAthlete() throws Exception {
+    games.selectRandomNumberAthlete(attendAthlete);
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +54,8 @@ public void testSelectRandomNumberAthlete() throws Exception {
 * 
 */ 
 @Test
-public void testGetAttendAthlete() throws Exception { 
+public void testGetAttendAthlete() throws Exception {
+    games.getAttendAthlete();
 //TODO: Test goes here... 
 } 
 
@@ -57,7 +65,8 @@ public void testGetAttendAthlete() throws Exception {
 * 
 */ 
 @Test
-public void testSetAttendAthlete() throws Exception { 
+public void testSetAttendAthlete() throws Exception {
+    games.setAttendAthlete(attendAthlete);
 //TODO: Test goes here... 
 } 
 

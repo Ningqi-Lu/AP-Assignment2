@@ -1,6 +1,7 @@
 package Test.Game;
 
-import org.junit.Test; 
+import Game.Running;
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 
 
@@ -11,7 +12,8 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class RunningTest { 
+public class RunningTest {
+    Running running;
 
 @Before
 public void before() throws Exception { 
@@ -27,7 +29,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testComplete() throws Exception { 
+public void testComplete() throws Exception {
+    running.complete();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +40,8 @@ public void testComplete() throws Exception {
 * 
 */ 
 @Test
-public void testReadDataFromAthlete() throws Exception { 
+public void testReadDataFromAthlete() throws Exception {
+    running.readDataFromAthlete();
 //TODO: Test goes here... 
 } 
 

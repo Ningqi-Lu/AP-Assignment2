@@ -1,5 +1,7 @@
 package Test.Game;
 
+import Game.Cycling;
+import Participants.Cyclist;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import java.util.Random;
  * @since <pre>四月 26, 2017</pre>
  */
 public class CyclingTest {
+    Cycling cycling;
 
     @Before
     public void before() throws Exception {
@@ -29,11 +32,7 @@ public class CyclingTest {
      */
     @Test
     public void testComplete() throws Exception {
-        String[] score = new String[5];
-        for (int count = 0; count < 5; count++) {
-            Random random=new Random();
-            score[count] = String.format("%.1f", ((random.nextDouble() * 300.0d) + 500.0d));
-        }
+        cycling.complete();
 
     }
 
@@ -42,6 +41,7 @@ public class CyclingTest {
      */
     @Test
     public void testReadDataFromAthlete() throws Exception {
+        cycling.readDataFromAthlete();
 //TODO: Test goes here... 
     }
 

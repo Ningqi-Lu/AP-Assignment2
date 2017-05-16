@@ -1,6 +1,7 @@
 package Test.Participants;
 
-import org.junit.Test; 
+import Participants.superAthlete;
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 
 
@@ -11,10 +12,12 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class superAthleteTest { 
+public class superAthleteTest {
+    superAthlete superathlete;
 
 @Before
-public void before() throws Exception { 
+public void before() throws Exception {
+    superathlete=new superAthlete("Oz1007","Mike","NA",31,"5");
 } 
 
 @After
@@ -27,7 +30,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testReadSuperAthleteData() throws Exception { 
+public void testReadSuperAthleteData() throws Exception {
+    superathlete.readSuperAthleteData();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +41,8 @@ public void testReadSuperAthleteData() throws Exception {
 * 
 */ 
 @Test
-public void testGetSuperathletes() throws Exception { 
+public void testGetSuperathletes() throws Exception {
+    superathlete.getSuperathletes();
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +52,8 @@ public void testGetSuperathletes() throws Exception {
 * 
 */ 
 @Test
-public void testSetSuperathletes() throws Exception { 
+public void testSetSuperathletes() throws Exception {
+    superathlete.setSuperathletes(superAthlete.superathletes);
 //TODO: Test goes here... 
 } 
 

@@ -1,22 +1,12 @@
 package Participants;
-/*
- * Athlete Class
- *
- * This class is Athlete has score and point parameter
- *
- * Created by Yingzhi Lu on 3/20/2017.
- * Modified by both Ningqi Lu and Yingzhi Lu
- */
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Athlete extends Participant{
+public class Athlete extends Participant {
 
-    private String score; // the score of every athlete
-    private Integer point; //the point of every athlete
     public static ArrayList<String[]> athleteALL; //cyclist arraylist
+    private static HashMap<String, Integer> AthletePointHashMap = new HashMap<>();
 
     static {
         try {
@@ -28,16 +18,9 @@ public class Athlete extends Participant{
         }
     }
 
-    private static HashMap<String,Integer> AthletePointHashMap = new HashMap<>();
+    private String score; // the score of every athlete
+    private Integer point; //the point of every athlete
 
-
-    public static ArrayList<String[]> getAthleteALL() {
-        return athleteALL;
-    }
-
-    public static void setAthleteALL(ArrayList<String[]> athleteALL) {
-        Athlete.athleteALL = athleteALL;
-    }
 
     /**
      * Constructor
@@ -53,6 +36,7 @@ public class Athlete extends Participant{
 
     /**
      * Constructor
+     *
      * @param participantID
      * @param participantName
      * @param participantState
@@ -66,6 +50,7 @@ public class Athlete extends Participant{
 
     /**
      * Constructor
+     *
      * @param participantID
      * @param participantName
      * @param participantState
@@ -77,9 +62,25 @@ public class Athlete extends Participant{
         this.point = point;
     }
 
+    public static ArrayList<String[]> getAthleteALL() {
+        return athleteALL;
+    }
+
+    public static void setAthleteALL(ArrayList<String[]> athleteALL) {
+        Athlete.athleteALL = athleteALL;
+    }
+
+    public static HashMap<String, Integer> getAthletePointHashMap() {
+        return AthletePointHashMap;
+    }
+
+    public void setAthletePointHashMap(HashMap<String, Integer> athletePointHashMap) {
+        AthletePointHashMap = athletePointHashMap;
+    }
 
     /**
      * getters and setters
+     *
      * @return
      */
     public String getScore() {
@@ -96,13 +97,5 @@ public class Athlete extends Participant{
 
     public void setPoint(Integer point) {
         this.point = point;
-    }
-
-    public static HashMap<String, Integer> getAthletePointHashMap() {
-        return AthletePointHashMap;
-    }
-
-    public void setAthletePointHashMap(HashMap<String, Integer> athletePointHashMap) {
-        AthletePointHashMap = athletePointHashMap;
     }
 }

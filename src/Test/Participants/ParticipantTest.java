@@ -1,6 +1,7 @@
 package Test.Participants;
 
-import org.junit.Test; 
+import Participants.Participant;
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 
 
@@ -11,10 +12,12 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class ParticipantTest { 
+public class ParticipantTest {
+    Participant participant;
 
 @Before
-public void before() throws Exception { 
+public void before() throws Exception {
+
 } 
 
 @After
@@ -27,7 +30,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testGetParticipantID() throws Exception { 
+public void testGetParticipantID() throws Exception {
+    participant.getParticipantID();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +41,8 @@ public void testGetParticipantID() throws Exception {
 * 
 */ 
 @Test
-public void testSetParticipantID() throws Exception { 
+public void testSetParticipantID() throws Exception {
+    participant.setParticipantID("Oz1002");
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +52,8 @@ public void testSetParticipantID() throws Exception {
 * 
 */ 
 @Test
-public void testGetParticipantName() throws Exception { 
+public void testGetParticipantName() throws Exception {
+    participant.getParticipantName();
 //TODO: Test goes here... 
 } 
 
@@ -57,7 +63,8 @@ public void testGetParticipantName() throws Exception {
 * 
 */ 
 @Test
-public void testSetParticipantName() throws Exception { 
+public void testSetParticipantName() throws Exception {
+    participant.setParticipantName("Emma");
 //TODO: Test goes here... 
 } 
 
@@ -67,7 +74,8 @@ public void testSetParticipantName() throws Exception {
 * 
 */ 
 @Test
-public void testGetParticipantState() throws Exception { 
+public void testGetParticipantState() throws Exception {
+    participant.getParticipantState();
 //TODO: Test goes here... 
 } 
 
@@ -77,7 +85,8 @@ public void testGetParticipantState() throws Exception {
 * 
 */ 
 @Test
-public void testSetParticipantState() throws Exception { 
+public void testSetParticipantState() throws Exception {
+    participant.setParticipantState("WA");
 //TODO: Test goes here... 
 } 
 
@@ -87,7 +96,9 @@ public void testSetParticipantState() throws Exception {
 * 
 */ 
 @Test
-public void testGetParticipantAge() throws Exception { 
+public void testGetParticipantAge() throws Exception {
+    participant.getParticipantAge();
+
 //TODO: Test goes here... 
 } 
 
@@ -97,7 +108,8 @@ public void testGetParticipantAge() throws Exception {
 * 
 */ 
 @Test
-public void testSetParticipantAge() throws Exception { 
+public void testSetParticipantAge() throws Exception {
+    participant.setParticipantAge(29);
 //TODO: Test goes here... 
 } 
 
