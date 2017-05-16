@@ -1,9 +1,3 @@
-package Game;
-
-import Participants.Cyclist;
-import Participants.Sprinter;
-import Participants.superAthlete;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

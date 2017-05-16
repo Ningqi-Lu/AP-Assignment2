@@ -1,9 +1,3 @@
-import Game.Cycling;
-import Game.Games;
-import Game.Running;
-import Game.Swimming;
-import Participants.Official;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -57,7 +51,8 @@ public class Driver {
 
         Menu menu = new Menu();
         do {
-            Scanner in = new Scanner(System.in);
+            @SuppressWarnings("resource")
+			Scanner in = new Scanner(System.in);
             try {
                 menu.menuShow();
                 choice = in.nextInt();
@@ -93,7 +88,8 @@ public class Driver {
      *
      * @return scoreMap
      */
-    public HashMap getAthleteScore() {
+    @SuppressWarnings("rawtypes")
+	public HashMap getAthleteScore() {
 
         HashMap<String, String> scoreMap = new HashMap<String, String>();//hashmap used to store the score and athlete data
         scoreMap.clear();
@@ -130,7 +126,8 @@ public class Driver {
      * @return list
      * @throws IOException
      */
-    void startGame() throws IOException {
+    @SuppressWarnings("unchecked")
+	void startGame() throws IOException {
         System.out.println("Game Started..... ");
         runTimes++;
         storeDecreasedScoreList.clear();
@@ -280,7 +277,8 @@ public class Driver {
     /**
      * Predict winner of ecah game for user
      */
-    public void predictWinner() {
+    @SuppressWarnings("resource")
+	public void predictWinner() {
         //System.out.println(Games.attendAthlete.size());
         if (Games.getAttendAthlete().size() == 0) {
             System.out.println("You need to select the game first!");
@@ -314,7 +312,8 @@ public class Driver {
      * the selection loop of game type
      */
 
-    public String selectGameLoop() {
+    @SuppressWarnings("resource")
+	public String selectGameLoop() {
         do {
             Scanner in = new Scanner(System.in);
             try {
@@ -352,9 +351,9 @@ public class Driver {
      *
      * @throws IOException
      */
-    public void getRandomOfficial() throws IOException, SQLException, ClassNotFoundException {
+    private void getRandomOfficial() throws IOException, SQLException, ClassNotFoundException {
         int i = (int) (Math.random() * Official.getOfficial().size());
-        referee = new String(Official.getOfficial().get(i)[0]);
+        referee = Official.getOfficial().get(i)[0];
     }
 
     public String getType() {

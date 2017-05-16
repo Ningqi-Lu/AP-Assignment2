@@ -1,11 +1,6 @@
-package Participants;
-
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import static Participants.readTXTData.COLUMN_NUM;
 
 /*
  * Swimmer Class
@@ -65,13 +60,18 @@ public class Swimmer extends Athlete{
      */
     public static void readSwimmerdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempSw = readDBdata.getLineList();
+    	  ArrayList<String[]> tempSw;
+  		try {
+  			tempSw = readDBdata.getLineList();
+  		} catch (Exception e) {
+  			tempSw = readTXTData.getLineList();
+  		}
 
         for (int i = 0; i < tempSw.size(); i++) {
             if (tempSw.get(i)[1].equals("SWIMMER")) {
-                String[] currCol = new String[COLUMN_NUM];
-                for (int n = 0; n < COLUMN_NUM; n++) {
-                    currCol[n] = tempSw.get(i)[COLUMN_NUM + n - 5];
+                String[] currCol = new String[readTXTData.COLUMN_NUM];
+                for (int n = 0; n < readTXTData.COLUMN_NUM; n++) {
+                    currCol[n] = tempSw.get(i)[readTXTData.COLUMN_NUM + n - 5];
                     //System.out.print(currCol[n]);
                 }
                 swimmer.add(currCol);

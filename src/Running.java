@@ -1,8 +1,3 @@
-package Game;
-
-import Participants.Sprinter;
-import Participants.superAthlete;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,8 +20,8 @@ public class Running extends Games implements Complete {
      */
     @Override
     public String[] complete() {
-        String[] score = new String[Games.getAttendAthlete().size()];
-        for (int count = 0; count < Games.getAttendAthlete().size(); count++) {
+        String[] score = new String[getAttendAthlete().size()];
+        for (int count = 0; count < getAttendAthlete().size(); count++) {
             Random random = new Random();
             score[count] = String.format("%.2f", ((random.nextDouble() * 10.0d) + 10.0d));
         }
