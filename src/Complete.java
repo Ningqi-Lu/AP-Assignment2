@@ -5,7 +5,6 @@
  *
  * Created by Ningqi Lu on 3/20/2017.
  */
-package Game;
 
 public interface Complete {
 

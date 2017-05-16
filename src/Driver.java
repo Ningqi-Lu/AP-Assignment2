@@ -1,9 +1,3 @@
-import Game.Cycling;
-import Game.Games;
-import Game.Running;
-import Game.Swimming;
-import Participants.Official;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

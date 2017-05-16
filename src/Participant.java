@@ -1,4 +1,3 @@
-package Participants;
 /*
  * abstarct class Participant
  *
