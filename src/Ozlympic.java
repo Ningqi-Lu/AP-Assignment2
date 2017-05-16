@@ -44,16 +44,19 @@ public class Ozlympic extends Application {
     private final TableView<GameResultHistory> scoreTable = new TableView<>();
     private final ObservableList<GameResultHistory> data = FXCollections.observableArrayList();//a collection to get data
     //private ArrayList<String[]> selectedAttendAthlete = new ArrayList<String[]>(); //attend athlete in every game
-    private ArrayList<String[]> attendAthlete = new ArrayList<String[]>(); //attend athlete in every game
+    private ArrayList<String[]> attendAthlete = new ArrayList<>(); //attend athlete in every game
 
     private Button start = new Button("Start Game"); //create the start button
     private Button starting = new Button("Ready");//create button to ready the game
     private Button btnRestart = new Button("Restart"); //create the restart button
     private Button showAllResults = new Button("All Results");
-    private TableColumn athleteIDCol = new TableColumn("Athlete ID");
-    private TableColumn athleteScoreCol = new TableColumn<>("Athlete Score");
-    private TableColumn pointsCol = new TableColumn<>("Points");
-    VBox vBox = new VBox();// a VBox to hold all the game results
+    @SuppressWarnings("rawtypes")
+	private TableColumn athleteIDCol = new TableColumn("Athlete ID");
+    @SuppressWarnings("rawtypes")
+	private TableColumn athleteScoreCol = new TableColumn<>("Athlete Score");
+    @SuppressWarnings("rawtypes")
+	private TableColumn pointsCol = new TableColumn<>("Points");
+    private VBox vBox = new VBox();// a VBox to hold all the game results
 
     public Ozlympic() throws IOException {
 
@@ -65,7 +68,8 @@ public class Ozlympic extends Application {
             driver.mainMenu();
 
         }*/
-    @Override // Override the start method in the Application class
+    @SuppressWarnings("unchecked")
+	@Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
 
         scoreTable.getColumns().addAll(athleteIDCol, athleteScoreCol, pointsCol);
@@ -82,11 +86,6 @@ public class Ozlympic extends Application {
         primaryStage.show(); // Display the stage
     }
 
-    private HBox showPastGameResult() {
-        showPastGameResult();
-        HBox x = new HBox();
-        return x;
-    }
 
     /**
      * get the main page of the game and call the progress bar method
@@ -176,11 +175,7 @@ public class Ozlympic extends Application {
                         attendAthlete = Games.getAttendAthlete();
                         selectAthleteByPlayer();
                         //getPredictStage();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    } catch (ClassNotFoundException e1) {
+                    } catch (IOException | SQLException | ClassNotFoundException e1) {
                         e1.printStackTrace();
                     }
                 });
@@ -210,7 +205,8 @@ public class Ozlympic extends Application {
     /**
      * get the result page which contains tableview and predict results and game details like referee
      */
-    private void getResultsTable() {
+    @SuppressWarnings("unchecked")
+	private void getResultsTable() {
         Stage s2 = new Stage();
         s2.setTitle("Game Results");
         s2.setResizable(false);
@@ -317,7 +313,7 @@ public class Ozlympic extends Application {
         return vb;
     }
 
-    public void selectAthleteByPlayer() throws SQLException, IOException, ClassNotFoundException {
+    private void selectAthleteByPlayer() throws SQLException, IOException, ClassNotFoundException {
         Stage selectAthlete = new Stage();
         /*attendAthlete.clear();
         attendAthlete = Games.getAttendAthlete();*/
@@ -338,12 +334,6 @@ public class Ozlympic extends Application {
         select.setAlignment(Pos.TOP_LEFT);
         select.setPadding(new Insets(30));
         select.getChildren().add(titleInfo);
-
-        /*driver.setType(Type);
-        driver.showAthleteinSelectedGame();*/
-        //driver.startGame();
-        //driver.displayAllPoints();
-        //this.storeDecreasedScoreList = driver.getStoreDecreasedScoreList();
 
         String[] names = new String[attendAthlete.size()];
         CheckBox[] cbs = new CheckBox[names.length];
@@ -402,11 +392,7 @@ public class Ozlympic extends Application {
                     //Games.getAttendAthlete().clear();
                     selectAthlete.close();
                     selectedAttendAthlete.clear();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException | SQLException e) {
                     e.printStackTrace();
                 }
             }else{
@@ -418,6 +404,7 @@ public class Ozlympic extends Application {
                 Scene scene=new Scene(warning,300,100);
                 stage.setScene(scene);
                 stage.setTitle("WARNING");
+                stage.setResizable(false);
                 stage.show();
             }
 
@@ -454,11 +441,13 @@ public class Ozlympic extends Application {
     }
 
     /**
-     * a predict page which show all the athlete attend the game
+     *  a predict page which show all the athlete attend the game
      * let the player select one to predict
-     *
      * @throws IOException
+     * @throws SQLException
+     * @throws ClassNotFoundException
      */
+    @SuppressWarnings("JavaDoc")
     private void getPredictStage() throws IOException, SQLException, ClassNotFoundException {
         //Driver driver = new Driver();
         //create a new stage to pop up a new window
@@ -481,14 +470,6 @@ public class Ozlympic extends Application {
         winnerSelect.setSpacing(15);
         winnerSelect.setAlignment(Pos.TOP_CENTER);
         winnerSelect.setPadding(new Insets(5));
-
-        //choice box to choose the winner
-       /* driver.setType(Type);
-        driver.showAthleteinSelectedGame();
-        driver.startGame();
-        driver.displayAllPoints();
-        this.storeDecreasedScoreList = driver.getStoreDecreasedScoreList();
-        inputDataToTableView();*/
 
         ChoiceBox<Object> cb = new ChoiceBox<>();
         for (int i = 0; i < Games.attendAthlete.size(); i++) {
@@ -551,7 +532,8 @@ public class Ozlympic extends Application {
      */
     private final Service<Integer> thread = new Service<Integer>() {
 
-        public Task createTask() {
+       
+		public Task<Integer> createTask() {
             return new Task<Integer>() {
                 @Override
                 protected Integer call() throws Exception {

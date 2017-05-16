@@ -65,7 +65,12 @@ public class Swimmer extends Athlete{
      */
     public static void readSwimmerdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempSw = readDBdata.getLineList();
+    	  ArrayList<String[]> tempSw;
+  		try {
+  			tempSw = readDBdata.getLineList();
+  		} catch (Exception e) {
+  			tempSw = readTXTData.getLineList();
+  		}
 
         for (int i = 0; i < tempSw.size(); i++) {
             if (tempSw.get(i)[1].equals("SWIMMER")) {

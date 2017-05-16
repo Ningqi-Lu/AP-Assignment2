@@ -64,7 +64,13 @@ public class Cyclist extends Athlete{
      */
     public static void readCyclistData() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempCy = readDBdata.getLineList();
+        ArrayList<String[]> tempCy;
+        
+		try {
+			tempCy = readDBdata.getLineList();
+		} catch (Exception e) {
+			tempCy = readTXTData.getLineList();
+		}
 
         for (int i = 0; i < tempCy.size(); i++) {
             if (tempCy.get(i)[1].equals("CYCLIST")) {

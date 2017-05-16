@@ -36,7 +36,12 @@ public class Official extends Participant{
      */
     public static void readOfficialdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempOf = readDBdata.getLineList();
+    	  ArrayList<String[]> tempOf;
+  		try {
+  			tempOf = readDBdata.getLineList();
+  		} catch (Exception e) {
+  			tempOf = readTXTData.getLineList();
+  		}
 
         for (int i = 0; i < tempOf.size(); i++) {
             if (tempOf.get(i)[1].equals("OFFICIAL")) {

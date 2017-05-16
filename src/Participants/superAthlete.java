@@ -63,7 +63,12 @@ public class superAthlete extends Athlete {
      */
     public static void readSuperAthleteData() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempSa = readDBdata.getLineList();
+    	  ArrayList<String[]> tempSa;
+  		try {
+  			tempSa = readDBdata.getLineList();
+  		} catch (Exception e) {
+  			tempSa = readTXTData.getLineList();
+  		}
 
         for (int i = 0; i < tempSa.size(); i++) {
             if (tempSa.get(i)[1].equals("SUPERATHLETE")) {

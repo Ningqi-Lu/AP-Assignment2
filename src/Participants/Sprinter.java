@@ -63,7 +63,12 @@ public class Sprinter extends Athlete{
      */
     public static void readSprinterdata() throws IOException, SQLException, ClassNotFoundException {
 
-        ArrayList<String[]> tempSp = readDBdata.getLineList();
+        ArrayList<String[]> tempSp;
+		try {
+			tempSp = readDBdata.getLineList();
+		} catch (Exception e) {
+			tempSp = readTXTData.getLineList();
+		}
 
         for (int i = 0; i < tempSp.size(); i++) {
             if (tempSp.get(i)[1].equals("SPRINTER")) {

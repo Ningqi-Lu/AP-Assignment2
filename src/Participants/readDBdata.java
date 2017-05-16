@@ -17,7 +17,6 @@ public class readDBdata {
 
     private static Connection con;
     private static boolean hasAthleteData = false;
-    private static boolean hasResultData = false;
 
     public static ResultSet getDBdata() throws SQLException, ClassNotFoundException {
         //if (con == null) {
