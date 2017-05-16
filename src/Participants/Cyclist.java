@@ -1,6 +1,9 @@
+package Participants;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static Participants.readTXTData.COLUMN_NUM;
 
 /*
  * Cyclist Class
@@ -71,9 +74,9 @@ public class Cyclist extends Athlete{
 
         for (int i = 0; i < tempCy.size(); i++) {
             if (tempCy.get(i)[1].equals("CYCLIST")) {
-                String[] currCol = new String[readTXTData.COLUMN_NUM];
-                for (int n = 0; n < readTXTData.COLUMN_NUM; n++) {
-                    currCol[n] = tempCy.get(i)[readTXTData.COLUMN_NUM + n - 5];
+                String[] currCol = new String[COLUMN_NUM];
+                for (int n = 0; n < COLUMN_NUM; n++) {
+                    currCol[n] = tempCy.get(i)[COLUMN_NUM + n - 5];
                     //System.out.print(currCol[n]);
                 }
                 cyclist.add(currCol);

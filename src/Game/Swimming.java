@@ -1,3 +1,9 @@
+package Game;
+
+import Participants.Sprinter;
+import Participants.Swimmer;
+import Participants.superAthlete;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,12 +22,13 @@ public class Swimming extends Games implements Complete {
 
     /**
      * Override method to calculate Swimming score
+     *
      * @return score
      */
     @Override
     public String[] complete() {
-        String[] score = new String[getAttendAthlete().size()];
-        for (int count = 0; count < getAttendAthlete().size(); count++) {
+        String[] score = new String[Games.getAttendAthlete().size()];
+        for (int count = 0; count < Games.getAttendAthlete().size(); count++) {
             Random random = new Random();
             score[count] = String.format("%.1f", ((random.nextDouble() * 100.0d) + 100.0d));
         }

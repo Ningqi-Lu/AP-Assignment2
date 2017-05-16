@@ -1,3 +1,12 @@
+package Participants;
+/*
+ * abstarct class Participant
+ *
+ * This method is used to define participant
+ *
+ * Created by Jodie Lu on 3/20/2017.
+ */
+
 public abstract class Participant {
 
     private String participantID;

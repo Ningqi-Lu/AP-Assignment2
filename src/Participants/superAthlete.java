@@ -1,6 +1,10 @@
+package Participants;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static Participants.readTXTData.COLUMN_NUM;
 
 /*
  * superAthlete Class
@@ -68,9 +72,9 @@ public class superAthlete extends Athlete {
 
         for (int i = 0; i < tempSa.size(); i++) {
             if (tempSa.get(i)[1].equals("SUPERATHLETE")) {
-                String[] currCol = new String[readTXTData.COLUMN_NUM];
-                for (int n = 0; n < readTXTData.COLUMN_NUM; n++) {
-                    currCol[n] = tempSa.get(i)[readTXTData.COLUMN_NUM + n - 5];
+                String[] currCol = new String[COLUMN_NUM];
+                for (int n = 0; n < COLUMN_NUM; n++) {
+                    currCol[n] = tempSa.get(i)[COLUMN_NUM + n - 5];
                     //System.out.print(currCol[n]);
                 }
                 superathletes.add(currCol);

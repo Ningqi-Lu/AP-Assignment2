@@ -1,6 +1,10 @@
+package Participants;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static Participants.readTXTData.COLUMN_NUM;
 
 /*
  * Sprinter Class
@@ -68,9 +72,9 @@ public class Sprinter extends Athlete{
 
         for (int i = 0; i < tempSp.size(); i++) {
             if (tempSp.get(i)[1].equals("SPRINTER")) {
-                String[] currCol = new String[readTXTData.COLUMN_NUM];
-                for (int n = 0; n < readTXTData.COLUMN_NUM; n++) {
-                    currCol[n] = tempSp.get(i)[readTXTData.COLUMN_NUM + n - 5];
+                String[] currCol = new String[COLUMN_NUM];
+                for (int n = 0; n < COLUMN_NUM; n++) {
+                    currCol[n] = tempSp.get(i)[COLUMN_NUM + n - 5];
                     //System.out.print(currCol[n]);
                 }
                 sprinter.add(currCol);

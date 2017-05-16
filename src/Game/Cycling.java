@@ -1,3 +1,9 @@
+package Game;
+
+import Participants.Cyclist;
+import Participants.Sprinter;
+import Participants.superAthlete;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,11 +37,12 @@ public class Cycling extends Games implements Complete {
 
     /**
      * read data from txt file and select 4-8 athletes to attend cycling
+     *
      * @throws IOException
      */
     @Override
     public void readDataFromAthlete() throws IOException, SQLException, ClassNotFoundException {
- /*     System.out.println(Cyclist.getCyclist().size());//17
+ /*       System.out.println(Cyclist.getCyclist().size());//17
         System.out.println(Sprinter.getSprinter().size());//17
         System.out.println(superAthlete.getSuperathletes().size());//14*/
         ArrayList<String[]> attendCyclingAthlete = new ArrayList<>();
