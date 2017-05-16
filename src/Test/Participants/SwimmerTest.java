@@ -1,6 +1,7 @@
 package Test.Participants;
 
-import org.junit.Test; 
+import Participants.Swimmer;
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 
 
@@ -11,10 +12,12 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class SwimmerTest { 
+public class SwimmerTest {
+    Swimmer swimmer;
 
 @Before
-public void before() throws Exception { 
+public void before() throws Exception {
+    swimmer=new Swimmer("Oz2009","Summer","VIC",24,"1");
 } 
 
 @After
@@ -27,7 +30,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testReadSwimmerdata() throws Exception { 
+public void testReadSwimmerdata() throws Exception {
+    swimmer.readSwimmerdata();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +41,8 @@ public void testReadSwimmerdata() throws Exception {
 * 
 */ 
 @Test
-public void testGetSwimmer() throws Exception { 
+public void testGetSwimmer() throws Exception {
+    swimmer.getSwimmer();
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +52,10 @@ public void testGetSwimmer() throws Exception {
 * 
 */ 
 @Test
-public void testSetSwimmer() throws Exception { 
+public void testSetSwimmer() throws Exception {
+    swimmer.setSwimmer(Swimmer.swimmer);
+
+
 //TODO: Test goes here... 
 } 
 

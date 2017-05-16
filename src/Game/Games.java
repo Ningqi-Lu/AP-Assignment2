@@ -30,7 +30,7 @@ public abstract class Games {
      * @param ad
      * @return ArrayList attendAthlete
      */
-    public void selectRandomNumberAthlete(ArrayList<String[]> ad) {
+    public static void selectRandomNumberAthlete(ArrayList<String[]> ad) {
         //System.out.println(ad.size());
         ArrayList<Integer> judgeRepeatedList = new ArrayList<Integer>(); //a list used to judge if this row number is repeated
         //judgeRepeatedList.clear();

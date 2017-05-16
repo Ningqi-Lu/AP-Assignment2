@@ -1,8 +1,16 @@
 package Test.Game;
 
-import org.junit.Test; 
+import Game.Games;
+import Game.Swimming;
+import Participants.Sprinter;
+import Participants.Swimmer;
+import Participants.superAthlete;
+import org.junit.Test;
 import org.junit.Before; 
-import org.junit.After; 
+import org.junit.After;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /** 
 * Swimming Tester. 
@@ -11,7 +19,8 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class SwimmingTest { 
+public class SwimmingTest {
+    public static Swimming swimming = new Swimming();
 
 @Before
 public void before() throws Exception { 
@@ -27,8 +36,14 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testComplete() throws Exception { 
-//TODO: Test goes here... 
+public void testComplete() throws Exception {
+    String[] score = new String[6];
+    for (int count = 0; count < 6; count++) {
+        Random random = new Random();
+        score[count] = String.format("%.1f", ((random.nextDouble() * 100.0d) + 100.0d));
+    }
+    swimming.complete();
+
 } 
 
 /** 
@@ -37,8 +52,13 @@ public void testComplete() throws Exception {
 * 
 */ 
 @Test
-public void testReadDataFromAthlete() throws Exception { 
-//TODO: Test goes here... 
+public void testReadDataFromAthlete() throws Exception {
+    ArrayList<String[]> attendSwimmingAthlete = new ArrayList<>();
+    attendSwimmingAthlete.addAll(Swimmer.getSwimmer());
+    attendSwimmingAthlete.addAll(Sprinter.getSprinter());
+    attendSwimmingAthlete.addAll(superAthlete.getSuperathletes());
+    Games.selectRandomNumberAthlete(attendSwimmingAthlete);
+
 } 
 
 

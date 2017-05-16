@@ -1,6 +1,7 @@
 package Test.Participants;
 
-import org.junit.Test; 
+import Participants.Sprinter;
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 
 
@@ -11,10 +12,12 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class SprinterTest { 
+public class SprinterTest {
+    Sprinter sprinter;
 
 @Before
-public void before() throws Exception { 
+public void before() throws Exception {
+    sprinter=new Sprinter("Oz2002","Jack","NSW",25,"5");
 } 
 
 @After
@@ -27,8 +30,9 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testReadSprinterdata() throws Exception { 
-//TODO: Test goes here... 
+public void testReadSprinterdata() throws Exception {
+    sprinter.readSprinterdata();
+//TODO: Test goes here...
 } 
 
 /** 
@@ -37,7 +41,8 @@ public void testReadSprinterdata() throws Exception {
 * 
 */ 
 @Test
-public void testGetSprinter() throws Exception { 
+public void testGetSprinter() throws Exception {
+    sprinter.getSprinter();
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +52,8 @@ public void testGetSprinter() throws Exception {
 * 
 */ 
 @Test
-public void testSetSprinter() throws Exception { 
+public void testSetSprinter() throws Exception {
+    sprinter.setSprinter(Sprinter.sprinter);
 //TODO: Test goes here... 
 } 
 

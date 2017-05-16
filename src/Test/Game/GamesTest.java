@@ -7,8 +7,8 @@ import org.junit.After;
 /** 
 * Games Tester. 
 * 
-* @author <Ningqi Lu>
-* @since <pre>四月 26, 2017</pre> 
+* @author <NINGQI LU>
+* @since <pre>四月 16, 2017</pre>
 * @version 1.0 
 */ 
 public class GamesTest { 

@@ -42,7 +42,7 @@ public class Cycling extends Games implements Complete {
      */
     @Override
     public void readDataFromAthlete() throws IOException, SQLException, ClassNotFoundException {
- /*       System.out.println(Cyclist.getCyclist().size());//17
+ /*     System.out.println(Cyclist.getCyclist().size());//17
         System.out.println(Sprinter.getSprinter().size());//17
         System.out.println(superAthlete.getSuperathletes().size());//14*/
         ArrayList<String[]> attendCyclingAthlete = new ArrayList<>();

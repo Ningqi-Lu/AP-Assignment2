@@ -1,8 +1,11 @@
 package Test.Participants;
 
-import org.junit.Test; 
+import Participants.Cyclist;
+import org.junit.Test;
 import org.junit.Before; 
-import org.junit.After; 
+import org.junit.After;
+
+import java.util.HashMap;
 
 /** 
 * Cyclist Tester. 
@@ -11,10 +14,14 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class CyclistTest { 
+public class CyclistTest {
+    Cyclist cyclist;
+    HashMap<String, Integer> athletePointHashMap;
 
 @Before
-public void before() throws Exception { 
+public void before() throws Exception {
+    cyclist = new Cyclist("Oz1008","Morgan","ACT", 24,"5");
+    athletePointHashMap = new HashMap<>();
 } 
 
 @After
@@ -27,7 +34,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testReadCyclistData() throws Exception { 
+public void testReadCyclistData() throws Exception {
+    cyclist.readCyclistData();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +45,8 @@ public void testReadCyclistData() throws Exception {
 * 
 */ 
 @Test
-public void testGetCyclist() throws Exception { 
+public void testGetCyclist() throws Exception {
+    cyclist.getCyclist();
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +56,8 @@ public void testGetCyclist() throws Exception {
 * 
 */ 
 @Test
-public void testSetCyclist() throws Exception { 
+public void testSetCyclist() throws Exception {
+    cyclist.setCyclist(Cyclist.cyclist);
 //TODO: Test goes here... 
 } 
 
