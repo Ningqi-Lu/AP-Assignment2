@@ -1,10 +1,10 @@
-package test.Game; 
+package Test;
 
-import Game.Cycling;
-import Game.Games;
-import Participants.Cyclist;
-import Participants.Sprinter;
-import Participants.superAthlete;
+import Cycling;
+import Games;
+import Cyclist;
+import Sprinter;
+import superAthlete;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /** 
-* Cycling Tester. 
+* Cycling Tester.
 * 
 * @author <Ningqi Lu>
 * @since <pre>四月 26, 2017</pre>

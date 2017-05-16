@@ -1,12 +1,3 @@
-/*
- * Athlete Class
- *
- * This class is Athlete has score and point parameter
- *
- * Created by Yingzhi Lu on 3/20/2017.
- * Modified by both Ningqi Lu and Yingzhi Lu
- */
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;

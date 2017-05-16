@@ -1,9 +1,9 @@
-package Test.Game;
+package Test;
 
-import Game.Games;
-import Game.Running;
-import Participants.Sprinter;
-import Participants.superAthlete;
+import Games;
+import Running;
+import Sprinter;
+import superAthlete;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;

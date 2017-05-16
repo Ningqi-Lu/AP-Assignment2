@@ -1,11 +1,11 @@
-package Test.Participants;
+package Test;
 
 import org.junit.Test; 
 import org.junit.Before; 
 import org.junit.After; 
 
 /** 
-* readTXTData Tester. 
+* readTXTData Tester.
 * 
 * @author <Ningqi Lu>
 * @since <pre>四月 26, 2017</pre> 

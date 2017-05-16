@@ -1,11 +1,11 @@
-package test.Participants; 
+package Test;
 
 import org.junit.Test; 
 import org.junit.Before; 
 import org.junit.After; 
 
 /** 
-* readDBdata Tester. 
+* readDBdata Tester.
 * 
 * @author Ningqi Lu
 * @since <pre>五月 15, 2017</pre> 
@@ -62,7 +62,7 @@ public void testGetConnection() throws Exception {
 //TODO: Test goes here... 
 /* 
 try { 
-   Method method = readDBdata.getClass().getMethod("getConnection"); 
+   Method method = readDBdata.getClass().getMethod("getConnection");
    method.setAccessible(true); 
    method.invoke(<Object>, <Parameters>); 
 } catch(NoSuchMethodException e) { 
@@ -82,7 +82,7 @@ public void testInitialiseAthleteTable() throws Exception {
 //TODO: Test goes here... 
 /* 
 try { 
-   Method method = readDBdata.getClass().getMethod("initialiseAthleteTable"); 
+   Method method = readDBdata.getClass().getMethod("initialiseAthleteTable");
    method.setAccessible(true); 
    method.invoke(<Object>, <Parameters>); 
 } catch(NoSuchMethodException e) { 
@@ -102,7 +102,7 @@ public void testReadDBdataToArrayLIst() throws Exception {
 //TODO: Test goes here... 
 /* 
 try { 
-   Method method = readDBdata.getClass().getMethod("readDBdataToArrayLIst"); 
+   Method method = readDBdata.getClass().getMethod("readDBdataToArrayLIst");
    method.setAccessible(true); 
    method.invoke(<Object>, <Parameters>); 
 } catch(NoSuchMethodException e) { 

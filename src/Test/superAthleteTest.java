@@ -1,6 +1,5 @@
-package Test.Participants;
+package Test;
 
-import Participants.superAthlete;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 

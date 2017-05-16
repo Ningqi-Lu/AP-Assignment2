@@ -1,11 +1,9 @@
-package Test.Participants;
+package Test;
 
-import Participants.Athlete;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static junit.framework.Assert.assertEquals;

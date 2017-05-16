@@ -1,10 +1,10 @@
-package Test.Game;
+package Test;
 
-import Game.Games;
-import Game.Swimming;
-import Participants.Sprinter;
-import Participants.Swimmer;
-import Participants.superAthlete;
+import Games;
+import Swimming;
+import Sprinter;
+import Swimmer;
+import superAthlete;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;

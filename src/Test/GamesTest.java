@@ -1,11 +1,11 @@
-package Test.Game;
+package Test;
 
 import org.junit.Test; 
 import org.junit.Before; 
 import org.junit.After; 
 
 /** 
-* Games Tester. 
+* Games Tester.
 * 
 * @author <NINGQI LU>
 * @since <pre>四月 16, 2017</pre>
