@@ -30,7 +30,6 @@ public class Running extends Games implements Complete {
 
     /**
      * read data from txt file and select 4-8 athletes to attend running
-     *
      * @throws IOException
      */
     @Override

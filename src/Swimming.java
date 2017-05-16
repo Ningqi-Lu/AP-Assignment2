@@ -16,7 +16,6 @@ public class Swimming extends Games implements Complete {
 
     /**
      * Override method to calculate Swimming score
-     *
      * @return score
      */
     @Override

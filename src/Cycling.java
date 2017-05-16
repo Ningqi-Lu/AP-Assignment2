@@ -31,7 +31,6 @@ public class Cycling extends Games implements Complete {
 
     /**
      * read data from txt file and select 4-8 athletes to attend cycling
-     *
      * @throws IOException
      */
     @Override

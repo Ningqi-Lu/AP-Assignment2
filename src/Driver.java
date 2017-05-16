@@ -45,45 +45,6 @@ public class Driver {
     }
 
     /**
-     * main menu class which control the main selection loop
-     */
-    public void mainMenu() {
-
-        Menu menu = new Menu();
-        do {
-            @SuppressWarnings("resource")
-			Scanner in = new Scanner(System.in);
-            try {
-                menu.menuShow();
-                choice = in.nextInt();
-                switch (choice) {
-                    case 1:
-                        menu.showGameSelect();
-                        showAthleteinSelectedGame();
-                        break;
-                    case 2:
-                        predictWinner();
-                        break;
-                    case 3:
-                        startGame();
-                        break;
-                    case 4:
-                        displayAllPoints();
-                        break;
-                    case 5:
-                        System.out.println("End of Game Ozlympic ! Thanks for playing!");
-                        out.close(); // colse the file
-                        return;
-                }
-            } catch (Exception e) {
-                // if input is a string or others use try catch to let player
-                // input again
-                System.out.println("PLEASE INPUT RIGHT CHOICE NUMBER !");
-            }
-        } while (true);
-    }
-
-    /**
      * get athlete score with different types
      *
      * @return scoreMap
