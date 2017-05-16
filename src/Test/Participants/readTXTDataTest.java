@@ -1,6 +1,7 @@
 package Test.Participants;
 
-import org.junit.Test; 
+import Participants.readTXTData;
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After; 
 
@@ -11,7 +12,8 @@ import org.junit.After;
 * @since <pre>四月 26, 2017</pre> 
 * @version 1.0 
 */ 
-public class readTXTDataTest { 
+public class readTXTDataTest {
+    readTXTData readtxtdata;
 
 @Before
 public void before() throws Exception { 
@@ -27,7 +29,8 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testGetTXTData() throws Exception { 
+public void testGetTXTData() throws Exception {
+    readtxtdata.getTXTData();
 //TODO: Test goes here... 
 } 
 
@@ -37,7 +40,8 @@ public void testGetTXTData() throws Exception {
 * 
 */ 
 @Test
-public void testGetLineList() throws Exception { 
+public void testGetLineList() throws Exception {
+    readtxtdata.getLineList();
 //TODO: Test goes here... 
 } 
 
@@ -47,7 +51,8 @@ public void testGetLineList() throws Exception {
 * 
 */ 
 @Test
-public void testSetLineList() throws Exception { 
+public void testSetLineList() throws Exception {
+
 //TODO: Test goes here... 
 } 
 
